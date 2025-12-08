@@ -37,15 +37,23 @@
             animation: unlockPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* --- 新增：結算圖片的跳動動畫 --- */
+        /* --- 結算圖片的跳動動畫 --- */
         @keyframes celebrate-bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px) scale(1.05); }
         }
         
-        /* 這個 class 會被加到結算圖片上 */
         .img-bounce {
             animation: celebrate-bounce 2s infinite ease-in-out;
+        }
+
+        /* 讓盤子上的食物 Hover 時晃動 */
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .hover-wiggle:hover {
+            animation: wiggle 0.3s ease-in-out infinite;
         }
 
         [data-tooltip]:hover::after {
@@ -115,7 +123,6 @@
         ];
 
         // --- 2. 飲食人格 ---
-        // 確保 'faster' 有設定 image，且路徑正確
         const personaDatabase = [
             { id: 'protein_hunter', name: '蛋白質獵人', emoji: '💪', image: './achievement_protein_hunter.png', desc: '你的眼裡只有雞胸肉，連喝水都想加蛋白粉。', color: 'bg-red-100 text-red-800' },
             { id: 'oil_king', name: '公館油王', emoji: '🛢️', image: './achievement_oil_king.png', desc: '你的血管裡流的不是血，是香濃的雞油與滷肉汁。', color: 'bg-yellow-100 text-yellow-800' },
@@ -176,7 +183,6 @@
 
         const calculatePersona = (totalStats) => {
             if (totalStats.calories === 0) return 'faster';
-            
             const pRatio = (totalStats.totalP * 4) / totalStats.calories;
             const fRatio = (totalStats.totalF * 9) / totalStats.calories;
             const cRatio = (totalStats.totalC * 4) / totalStats.calories;
@@ -198,20 +204,45 @@
             return Math.round(bmr * activityLevel);
         };
 
-        const getMealAdvice = (stats) => {
-            const { totalP, totalC, totalF, calories } = stats;
-            if (calories < 100) return "吃這麼少？你是小鳥胃嗎？記得要吃到基礎代謝喔！";
-            const pRatio = calories > 0 ? (totalP * 4) / calories : 0;
-            const fRatio = calories > 0 ? (totalF * 9) / calories : 0;
-            const cRatio = calories > 0 ? (totalC * 4) / calories : 0;
+        // --- 修改：通用營養回饋函式 (可接受目標熱量) ---
+        const getNutritionFeedback = (stats, targetCalories) => {
+            const { calories, totalP, totalC, totalF } = stats;
+            const advice = [];
             
-            if (fRatio > 0.5 && totalF > 35) return "這餐太油囉！滿嘴都是油，小心體脂飆升！建議下一餐選清淡點。";
-            if (cRatio > 0.65) return "澱粉炸彈！吃完這餐可能會想睡覺，記得起來動一動。";
-            if (pRatio > 0.35) return "蛋白質滿滿！非常適合健身後補充修復肌肉。";
-            if (pRatio > 0.25 && fRatio < 0.35) return "營養比例很均衡！完美的模範生餐盤！";
-            if (calories > 1200) return "熱量爆表啦！這餐吃得太放縱囉，建議下一餐少吃點。";
-            
-            return "這一餐還可以，記得多喝水幫助代謝喔！";
+            // 1. 熱量評估 (通用化文字)
+            if (calories < targetCalories * 0.5) {
+                advice.push("⚠️ 熱量：嚴重不足 (這樣會掉肌肉變易胖體質喔！)");
+            } else if (calories < targetCalories * 0.8) {
+                advice.push("📉 熱量：偏低 (能量不足容易疲勞，下餐補回來)");
+            } else if (calories > targetCalories * 1.4) {
+                advice.push("🔥 熱量：嚴重超標 (這餐吃得太放縱囉，注意體脂！)");
+            } else if (calories > targetCalories * 1.1) {
+                advice.push("⚠️ 熱量：稍微超標 (偶爾放縱沒關係，多喝水)");
+            } else {
+                advice.push("✅ 熱量：控制完美 (維持得很棒，請繼續保持)");
+            }
+
+            // 2. 營養素評估 (比例不變)
+            const pRatio = (totalP * 4) / (calories || 1);
+            const fRatio = (totalF * 9) / (calories || 1);
+            const cRatio = (totalC * 4) / (calories || 1);
+
+            // 蛋白質檢查
+            if (pRatio < 0.15) advice.push(`🥩 蛋白質比例：太少 (肌肉修復原料不足，易流失肌肉)`);
+            else if (pRatio > 0.4) advice.push(`💪 蛋白質比例：偏高 (沒重訓的話會變腎臟負擔喔)`);
+            else advice.push(`🥩 蛋白質比例：適中 (修復肌肉剛剛好)`);
+
+            // 脂肪檢查
+            if (fRatio > 0.45) advice.push(`🛢️ 油脂比例：太高 (血管在尖叫了！小心發炎)`);
+            else if (fRatio < 0.15) advice.push(`🥑 油脂比例：太少 (皮膚會變乾澀，荷爾蒙需要好油)`);
+            else advice.push(`🥑 油脂比例：適中 (很棒！維持身體機能運作)`);
+
+            // 碳水檢查
+            if (cRatio > 0.65) advice.push(`🍚 澱粉比例：過量 (血糖波動大，下午容易想睡)`);
+            else if (cRatio < 0.3) advice.push(`🍞 澱粉比例：不足 (大腦反應會變慢，也容易沒力氣)`);
+            else advice.push(`🍞 澱粉比例：適中 (精神體力維持得宜)`);
+
+            return advice;
         };
 
         const TypewriterText = ({ text, speed = 30, onComplete }) => {
@@ -270,6 +301,56 @@
             );
         };
 
+        // --- 新增：即時餐盤建議元件 ---
+        const CurrentPlateAdvice = ({ tray }) => {
+            if (tray.length === 0) return <div className="text-center text-gray-400 text-xs mt-2 h-6 flex items-center justify-center">請選擇食物放入餐盤</div>;
+
+            const totalCalories = tray.reduce((acc, f) => acc + (f.calories || 0), 0);
+            const totalF = tray.reduce((acc, f) => acc + (f.f || 0), 0);
+            const totalC = tray.reduce((acc, f) => acc + (f.c || 0), 0);
+            const totalP = tray.reduce((acc, f) => acc + (f.p || 0), 0);
+            
+            // 計算比例 (與 getNutritionFeedback 邏輯統一)
+            const fRatio = (totalF * 9) / (totalCalories || 1);
+            const cRatio = (totalC * 4) / (totalCalories || 1);
+            
+            // 收集所有警告訊息，而不是只顯示一個
+            const warnings = [];
+            
+            // --- 修改重點：加入絕對數值門檻 ---
+            // 只有當總脂肪大於 12g (約一顆蛋的兩倍多) 且比例高時才警告
+            if (fRatio > 0.45 && totalF > 12) warnings.push("🛢️油脂比例偏高");
+            
+            // 只有當總碳水大於 30g (約半碗飯) 且比例高時才警告
+            if (cRatio > 0.65 && totalC > 30) warnings.push("🍚澱粉比例過量");
+            
+            // 熱量還是保留絕對值警告 (單餐 > 800)
+            if (totalCalories > 800) warnings.push("🔥熱量偏高");
+
+            let displayContent = "";
+            let colorClass = "text-gray-500";
+
+            if (warnings.length > 0) {
+                // 如果有警告，將它們串接起來顯示
+                displayContent = warnings.join(" ‧ ");
+                colorClass = "text-red-500 font-bold animate-pulse";
+            } else {
+                // 沒有警告時的提示邏輯
+                if (tray.length === 1 && totalCalories < 300) {
+                    displayContent = "💡 太單調囉，再多選幾樣不一樣的！";
+                    colorClass = "text-blue-500";
+                } else if (totalP > 25 && fRatio < 0.3) { 
+                    displayContent = "💪 優質蛋白！很棒的選擇！";
+                    colorClass = "text-green-600 font-bold";
+                } else {
+                    displayContent = "✅ 營養比例還不錯，繼續保持";
+                    colorClass = "text-gray-500";
+                }
+            }
+
+            return <div className={`text-center text-xs mt-2 h-6 flex items-center justify-center ${colorClass} transition-all duration-300`}>{displayContent}</div>;
+        };
+
         const FoodCard = ({ food, onClick, onInfo }) => {
             const getTags = () => {
                 const t = [];
@@ -325,6 +406,7 @@
             );
         };
 
+        // --- 修改：RoundPlate (加回 X 疊加層) ---
         const RoundPlate = ({ tray, onRemove }) => {
             const slots = [0, 1, 2, 3, 4, 5]; 
             const totalP = tray.reduce((acc, f) => acc + (f.p || 0), 0);
@@ -358,9 +440,12 @@
                                 >
                                     {food ? (
                                         <div className="flex flex-col items-center pop-in relative group">
-                                            <span className="text-4xl drop-shadow-lg filter group-hover:brightness-110 transition-all">{food.emoji}</span>
-                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/80 rounded-full">
-                                                <i data-lucide="x" className="text-red-500 w-6 h-6"></i>
+                                            <span className="text-4xl drop-shadow-lg filter transition-transform transform group-hover:scale-105 duration-200">{food.emoji}</span>
+                                            {/* 加回 X 疊加層 */}
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 backdrop-blur-[1px] rounded-full duration-200">
+                                                <div className="text-red-500 w-8 h-8 drop-shadow-md">
+                                                    <Icons.X />
+                                                </div>
                                             </div>
                                         </div>
                                     ) : (
@@ -660,6 +745,9 @@
                                 <RoundPlate tray={tray} onRemove={removeFromTray} />
                             </div>
 
+                            {/* --- 新增：即時餐盤建議 --- */}
+                            <CurrentPlateAdvice tray={tray} />
+
                             <button onClick={confirmMeal} disabled={tray.length === 0} className={`w-11/12 py-2 rounded-xl font-bold shadow-md text-sm ${tray.length > 0 ? 'bg-yellow-400 text-black' : 'bg-gray-200 text-gray-400'}`}>
                                 {gameState === "STORY_PLAY" && storyMealIndex < 2 ? "下一餐" : "完食結算"}
                             </button>
@@ -690,12 +778,29 @@
             }
 
             if (gameState === "WARMUP_RESULT") {
-                const advice = getMealAdvice(dailyStats);
+                // 修改：使用新的通用回饋邏輯
+                const userTDEE = userProfile?.tdee || 2000;
+                const mealTarget = Math.round(userTDEE / 3); // 單餐目標 = TDEE / 3
+                const advices = getNutritionFeedback(dailyStats, mealTarget);
+
                 return (
-                    <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in">
+                    <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in overflow-y-auto">
                         <div className="text-6xl mb-4">🍽️</div>
                         <h2 className="text-2xl font-bold mb-2">本餐結算</h2>
-                        <div className="bg-white/10 p-4 rounded-xl border border-white/20 mb-6 text-yellow-300 text-sm font-bold">💡 {advice}</div>
+                        
+                        {/* 修改：顯示詳細建議列表 */}
+                        <div className="bg-blue-900/50 p-4 rounded-xl w-full max-w-sm mb-6 border border-blue-700/50 text-left">
+                            <h3 className="text-xs text-blue-300 mb-2 uppercase font-bold tracking-wider">👩‍⚕️ 營養師的本餐點評</h3>
+                            <ul className="text-sm space-y-2">
+                                {advices.map((advice, idx) => (
+                                    <li key={idx} className="flex gap-2">
+                                        <span>•</span>
+                                        <span>{advice}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
                         <div className="bg-white/10 p-6 rounded-2xl w-full max-w-sm mb-8 text-left shadow-sm border border-white/20">
                              <div className="flex justify-between mb-2 font-mono text-sm"><span>熱量</span><span>{dailyStats.calories} kcal</span></div>
                              <div className="flex justify-between mb-2 font-mono text-sm text-red-300"><span>蛋白質</span><span>{dailyStats.totalP} g</span></div>
@@ -714,11 +819,13 @@
             if (gameState === "RESULT") {
                 const personaId = calculatePersona(dailyStats);
                 const persona = personaDatabase.find(p => p.id === personaId);
+                
+                // 修改：呼叫更名後的函式，傳入完整 TDEE
+                const dailyAdvices = getNutritionFeedback(dailyStats, userProfile?.tdee || 2000);
 
                 return (
-                    <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in">
+                    <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in overflow-y-auto">
                         <div className="mb-6 flex justify-center relative w-48 h-48 mx-auto">
-                            {/* 改進後的圖片邏輯：只要 image 屬性存在且不是空字串，就嘗試顯示圖片 */}
                             {persona.image && persona.image.length > 0 ? (
                                 <img 
                                     src={persona.image} 
@@ -731,7 +838,21 @@
                         </div>
 
                         <h2 className="text-2xl font-bold mb-2">覺醒人格：{persona.name}</h2>
-                        <p className="text-gray-400 mb-8 max-w-xs">{persona.desc}</p>
+                        <p className="text-gray-400 mb-6 max-w-xs">{persona.desc}</p>
+                        
+                        {/* --- 新增：營養師總評區域 --- */}
+                        <div className="bg-blue-900/50 p-4 rounded-xl w-full max-w-sm mb-6 border border-blue-700/50 text-left">
+                            <h3 className="text-xs text-blue-300 mb-2 uppercase font-bold tracking-wider">👩‍⚕️ 營養師的每日總評</h3>
+                            <ul className="text-sm space-y-2">
+                                {dailyAdvices.map((advice, idx) => (
+                                    <li key={idx} className="flex gap-2">
+                                        <span>•</span>
+                                        <span>{advice}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
                         <div className="bg-white/10 p-4 rounded-xl w-full max-w-sm mb-6 text-left">
                             <h3 className="text-xs text-gray-400 mb-2 uppercase">本日攝取總結</h3>
                             <div className="font-mono text-sm space-y-1">
@@ -782,4 +903,3 @@
     </script>
 </body>
 </html>
-
