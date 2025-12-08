@@ -26,10 +26,8 @@
         .slot-4 { bottom: 45px; left: 10px; }
         .slot-5 { top: 45px; left: 10px; }
 
-        /* 黑影濾鏡：這次改為對圖片也有效 */
         .locked-persona { filter: brightness(0) opacity(0.3) grayscale(100%); }
 
-        /* 成就解鎖動畫 */
         @keyframes unlockPop {
             0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
             50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
@@ -37,6 +35,17 @@
         }
         .unlock-animation {
             animation: unlockPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* --- 新增：結算圖片的跳動動畫 --- */
+        @keyframes celebrate-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        
+        /* 這個 class 會被加到結算圖片上 */
+        .img-bounce {
+            animation: celebrate-bounce 2s infinite ease-in-out;
         }
 
         [data-tooltip]:hover::after {
@@ -60,11 +69,6 @@
             margin-bottom: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-
-        @media (min-width: 768px) {
-            .food-grid > button:nth-child(3n+1)[data-tooltip]:hover::after { left: 0; transform: translateX(0); text-align: left; }
-            .food-grid > button:nth-child(3n)[data-tooltip]:hover::after { left: auto; right: 0; transform: translateX(0); text-align: right; }
-        }
     </style>
 </head>
 <body>
@@ -73,7 +77,6 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // --- 0. 內建圖示 ---
         const Icons = {
             Info: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>,
             X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
@@ -83,7 +86,6 @@
             Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         };
 
-        // --- 1. 資料庫 ---
         const foodDatabase = [
             { id: 4, name: "小木屋鬆餅(鮮奶油)", emoji: "🧇", calories: 450, p: 8, c: 55, f: 22, health: -8, mood: 15, tags: ['snack', 'restaurant'], desc: "甜蜜的下午茶首選，但鮮奶油熱量不容小覷。" },
             { id: 6, name: "鳳城三寶飯", emoji: "🍛", calories: 900, p: 35, c: 110, f: 35, health: -10, mood: 20, tags: ['restaurant', 'night_market'], desc: "肉量十足的港式燒臘，醬汁下飯但油脂爆表。" },
@@ -112,18 +114,17 @@
             { id: 38, name: "7-11-北海道蕎麥沾麵", emoji: "🍜", calories: 336, p: 14, c: 59, f: 5, health: 10, mood: 15, tags: ['convenience'], desc: "打折時的高CP值選擇，沾醬配冷麵吃起來很有味。" }
         ];
 
-        // --- 2. 飲食人格 (重要：修復了絕食系圖片連結) ---
-        // 請確保您將生成的圖片命名為 'achievement_faster.png' 並放在專案根目錄
+        // --- 2. 飲食人格 ---
+        // 確保 'faster' 有設定 image，且路徑正確
         const personaDatabase = [
             { id: 'protein_hunter', name: '蛋白質獵人', emoji: '💪', image: './achievement_protein_hunter.png', desc: '你的眼裡只有雞胸肉，連喝水都想加蛋白粉。', color: 'bg-red-100 text-red-800' },
             { id: 'oil_king', name: '公館油王', emoji: '🛢️', image: './achievement_oil_king.png', desc: '你的血管裡流的不是血，是沙茶醬與美乃滋。', color: 'bg-yellow-100 text-yellow-800' },
             { id: 'carb_cultist', name: '澱粉教徒', emoji: '🍚', image: './achievement_carb_cultist.png', desc: '飯、麵、麵包...沒有澱粉的一餐對你來說只是點心。', color: 'bg-orange-100 text-orange-800' },
-            { id: 'faster', name: '絕食系修仙者', emoji: '🧘', image: './achievement_faster.png', desc: '吃這麼少，你是準備得道成仙了嗎？', color: 'bg-gray-100 text-gray-800' }, // 這裡修復了
+            { id: 'faster', name: '絕食系修仙者', emoji: '🧘', image: './achievement_faster.png', desc: '吃這麼少，你是準備得道成仙了嗎？', color: 'bg-gray-100 text-gray-800' },
             { id: 'nutritionist', name: '營養精算師', emoji: '🥗', image: './achievement_nutritionist.png', desc: '三大營養素比例完美，你是 AI 吧？', color: 'bg-green-100 text-green-800' },
             { id: 'happy_chubby', name: '快樂肥宅', emoji: '😈', image: './achievement_happy_chubby.png', desc: '人生苦短，及時行樂，體重計什麼的先丟掉吧。', color: 'bg-purple-100 text-purple-800' },
         ];
 
-        // --- 3. 關卡設定 ---
         const stages = {
             TUTORIAL: {
                 id: 'TUTORIAL',
@@ -180,27 +181,14 @@
             const fRatio = (totalStats.totalF * 9) / totalStats.calories;
             const cRatio = (totalStats.totalC * 4) / totalStats.calories;
             
-            // 1. 絕食系
             if (totalStats.calories < 800) return 'faster';
-            
-            // 2. 快樂肥宅 (條件放寬一點，或者熱量超高)
             if (totalStats.calories > 2500 || (totalStats.mood > 85 && totalStats.health < 30)) return 'happy_chubby';
-            
-            // 3. 公館油王
             if (fRatio > 0.45 || totalStats.totalF > 80) return 'oil_king';
-            
-            // 4. 蛋白質獵人
             if (pRatio > 0.30) return 'protein_hunter';
-            
-            // 5. 澱粉教徒
             if (cRatio > 0.60) return 'carb_cultist';
-            
-            // 6. 營養精算師 (嚴格判定：均衡)
             if (pRatio >= 0.2 && pRatio <= 0.4 && fRatio >= 0.2 && fRatio <= 0.4) {
                 return 'nutritionist';
             }
-            
-            // 預設
             return 'happy_chubby'; 
         };
 
@@ -225,8 +213,6 @@
             
             return "這一餐還可以，記得多喝水幫助代謝喔！";
         };
-
-        // --- Components ---
 
         const TypewriterText = ({ text, speed = 30, onComplete }) => {
             const [displayedText, setDisplayedText] = useState("");
@@ -501,7 +487,7 @@
                         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><div className="w-6 h-6"><Icons.X /></div></button>
                         
                         <div className="mb-6 flex justify-center">
-                            {persona.image && persona.image.startsWith('.') ? (
+                            {persona.image && persona.image.length > 0 ? (
                                 <img src={persona.image} alt={persona.name} className="w-48 h-48 object-contain drop-shadow-2xl unlock-animation" />
                             ) : (
                                 <div className="text-8xl animate-bounce">{persona.emoji}</div>
@@ -518,7 +504,6 @@
             );
         };
 
-        // --- 5. 主程式元件 ---
         const App = () => {
             const [gameState, setGameState] = useState("ONBOARDING"); 
             const [userProfile, setUserProfile] = useState(null);
@@ -531,8 +516,6 @@
             const [tutorialFeedback, setTutorialFeedback] = useState(null); 
             const [selectedPersona, setSelectedPersona] = useState(null); 
             const [storyModalOpen, setStoryModalOpen] = useState(false);
-
-            // --- 邏輯函數 ---
 
             const addFood = (food) => {
                 if (tray.length < 6) {
@@ -599,8 +582,6 @@
             };
 
             const handleOnboardingComplete = (profile) => { setUserProfile(profile); setGameState("ANALYSIS"); };
-
-            // --- 畫面渲染 ---
 
             if (gameState === "ONBOARDING") { return <Onboarding onComplete={handleOnboardingComplete} />; }
             if (gameState === "ANALYSIS") { return <AnalysisResult profile={userProfile} onConfirm={() => setGameState("STAGES")} onBack={() => setGameState("ONBOARDING")} />; }
@@ -733,11 +714,17 @@
             if (gameState === "RESULT") {
                 const personaId = calculatePersona(dailyStats);
                 const persona = personaDatabase.find(p => p.id === personaId);
+
                 return (
                     <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in">
-                        <div className="mb-6 flex justify-center">
-                            {persona.image && persona.image.startsWith('.') ? (
-                                <img src={persona.image} alt={persona.name} className="w-48 h-48 object-contain drop-shadow-2xl unlock-animation" />
+                        <div className="mb-6 flex justify-center relative w-48 h-48 mx-auto">
+                            {/* 改進後的圖片邏輯：只要 image 屬性存在且不是空字串，就嘗試顯示圖片 */}
+                            {persona.image && persona.image.length > 0 ? (
+                                <img 
+                                    src={persona.image} 
+                                    alt={persona.name} 
+                                    className="w-48 h-48 object-contain drop-shadow-2xl img-bounce relative z-10"
+                                />
                             ) : (
                                 <div className="text-8xl animate-bounce">{persona.emoji}</div>
                             )}
@@ -775,7 +762,7 @@
                                 className={`bg-white p-4 rounded-xl shadow-sm flex flex-col items-center text-center transition-transform ${unlockedPersonas.includes(p.id)?'cursor-pointer hover:scale-105':'opacity-70'}`}
                             >
                                 <div className={`mb-2 ${unlockedPersonas.includes(p.id)?'':'locked-persona'}`}>
-                                    {p.image && p.image.startsWith('.') ? 
+                                    {p.image && p.image.length > 0 ? 
                                         <img src={p.image} alt={p.name} className="w-16 h-16 object-cover rounded-full" /> : 
                                         <div className="text-4xl">{p.emoji}</div>
                                     }
