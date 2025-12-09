@@ -179,8 +179,8 @@
             STORY: {
                 id: 'STORY',
                 title: 'Stage 2：一日生存戰',
-                desc: '模擬真實的一天！早餐匆忙、午餐趕課、晚餐放縱。',
-                type: 'story',
+                desc: '選擇你的目標，挑戰一日三餐！',
+                type: 'story_menu', // 新增的選單類型
                 meals: [
                     { 
                         name: "早餐", 
@@ -202,6 +202,51 @@
                         hint: "終於下課了！公館美食任你吃",
                         storyTitle: "🕕 6:30 PM - 自由的空氣",
                         storyDesc: "恭喜你！終於撐過了充滿摧殘的一天。\n\n此刻的你身心俱疲，只有公館夜市的燈光能溫暖你的心。這時候不用管什麼效率了，想吃什麼就吃什麼，這是屬於勝利者的晚餐！\n\n【任務目標】 全種類解鎖！去「公館商圈」或「餐廳」好好犒賞自己吧！"
+                    }
+                ],
+                subLevels: [
+                    {
+                        id: 'story_fat_loss',
+                        title: '🔥 目標：減脂計畫',
+                        desc: '控制熱量，保持飽足感，燃燒脂肪吧！',
+                        objective: '熱量<TDEE 且 蛋白質充足',
+                        // 判定函式: 熱量 60%~95% TDEE, 蛋白質比例 > 25%
+                        criteria: (stats, tdee) => {
+                            const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                            return stats.calories < tdee * 0.95 && stats.calories > tdee * 0.6 && pRatio > 0.25;
+                        },
+                        successMsg: "減脂挑戰成功！熱量控制得宜，蛋白質也足夠，是完美的減脂日！",
+                        failMsg: "減脂挑戰失敗。熱量可能超標，或是蛋白質攝取不足導致肌肉流失喔。"
+                    },
+                    {
+                        id: 'story_balanced',
+                        title: '⚖️ 目標：營養均衡',
+                        desc: '不極端飲食，追求身心靈的平衡。',
+                        objective: '熱量維持 TDEE，P/C/F 均衡',
+                        // 判定函式: 熱量 90%~110% TDEE, 比例不極端
+                        criteria: (stats, tdee) => {
+                             const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                             const fRatio = (stats.totalF * 9) / (stats.calories || 1);
+                             const cRatio = (stats.totalC * 4) / (stats.calories || 1);
+                             const calOk = stats.calories >= tdee * 0.9 && stats.calories <= tdee * 1.1;
+                             const ratioOk = pRatio > 0.15 && pRatio < 0.4 && fRatio > 0.15 && fRatio < 0.45 && cRatio > 0.3 && cRatio < 0.65;
+                             return calOk && ratioOk;
+                        },
+                        successMsg: "均衡飲食成功！你的身體感謝你，維持了完美的平衡狀態。",
+                        failMsg: "挑戰失敗。可能熱量太高/太低，或者某一項營養素比例失衡囉。"
+                    },
+                    {
+                        id: 'story_muscle',
+                        title: '💪 目標：增肌特訓',
+                        desc: '為了變得更強壯！需要熱量盈餘與大量蛋白質。',
+                        objective: '熱量 > TDEE 且 高蛋白',
+                        // 判定函式: 熱量 105%~130% TDEE, 蛋白質比例 > 25%
+                        criteria: (stats, tdee) => {
+                            const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                            return stats.calories > tdee * 1.05 && stats.calories < tdee * 1.4 && pRatio > 0.25;
+                        },
+                        successMsg: "增肌挑戰成功！熱量盈餘加上充足蛋白，肌肉正在生長！",
+                        failMsg: "挑戰失敗。熱量不足以支持肌肉生長，或者蛋白質吃太少囉。"
                     }
                 ]
             }
@@ -321,9 +366,8 @@
             );
         };
 
-        // --- 新增：放置在餐盤上方的營養比例條元件 ---
         const NutritionRatioBar = ({ p, c, f, calories }) => {
-            if (!calories || calories === 0) return <div className="h-6"></div>; // 佔位防止跳動
+            if (!calories || calories === 0) return <div className="h-6"></div>; 
 
             const calFromP = p * 4;
             const calFromC = c * 4;
@@ -448,7 +492,6 @@
             );
         };
 
-        // --- 修改：RoundPlate (移除中間的比例條，改回顯示 P/C/F 公克數) ---
         const RoundPlate = ({ tray, onRemove }) => {
             const slots = [0, 1, 2, 3, 4, 5]; 
             const totalP = tray.reduce((acc, f) => acc + (f.p || 0), 0);
@@ -461,7 +504,6 @@
                     <div className="plate-container">
                         <div className="absolute inset-0 border-4 border-dashed border-gray-200 rounded-full opacity-50 m-2"></div>
                         
-                        {/* 圓盤中心：顯示具體公克數 (絕對數值) */}
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center bg-white/95 rounded-full w-24 h-24 shadow-md z-0 pointer-events-none border border-gray-100 p-1">
                             <span className="text-[10px] text-gray-400 mb-0.5 font-bold">本餐統計</span>
                             <div className="flex items-center gap-1 text-xs font-mono mb-1">
@@ -486,7 +528,7 @@
                                     {food ? (
                                         <div className="flex flex-col items-center pop-in relative group">
                                             <span className="text-4xl drop-shadow-lg filter transition-transform transform group-hover:scale-105 duration-200">{food.emoji}</span>
-                                            {/* 加回 X 疊加層 */}
+                                            {/* X 疊加層 */}
                                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/60 backdrop-blur-[1px] rounded-full duration-200">
                                                 <div className="text-red-500 w-8 h-8 drop-shadow-md">
                                                     <Icons.X />
@@ -679,6 +721,8 @@
                     setGameState("TUTORIAL_MENU");
                 } else if (stage.type === 'meal') {
                     setGameState("WARMUP_PLAY");
+                } else if (stage.type === 'story_menu') { // 修正為 story_menu
+                     setGameState("STORY_MENU");
                 } else if (stage.type === 'story') {
                     setStoryMealIndex(0);
                     setGameState("STORY_PLAY");
@@ -689,7 +733,15 @@
             const startSubLevel = (subLevel) => {
                 setCurrentSubLevel(subLevel);
                 setTray([]);
-                setGameState("TUTORIAL_PLAY");
+                
+                if (currentStage.id === 'TUTORIAL') {
+                    setGameState("TUTORIAL_PLAY");
+                } else if (currentStage.id === 'STORY') {
+                    setStoryMealIndex(0);
+                    setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 }); // Reset
+                    setGameState("STORY_PLAY");
+                    setStoryModalOpen(true);
+                }
             };
 
             const confirmMeal = () => {
@@ -741,7 +793,7 @@
                         <div className="space-y-4 w-full max-w-sm">
                             <button onClick={() => startLevel('TUTORIAL')} className="w-full bg-white p-4 rounded-xl shadow border-l-4 border-blue-400 text-left hover:shadow-lg transition transform hover:-translate-y-1"><div className="font-bold text-lg">🔰 Stage 0：營養新手村</div><div className="text-sm text-gray-500">實戰演練：找出高蛋白</div></button>
                             <button onClick={() => startLevel('WARMUP')} className="w-full bg-white p-4 rounded-xl shadow border-l-4 border-green-400 text-left hover:shadow-lg transition transform hover:-translate-y-1"><div className="font-bold text-lg">⚔️ Stage 1：自由食習</div><div className="text-sm text-gray-500">練習吃一餐 (無限制)</div></button>
-                            <button onClick={() => startLevel('STORY')} className="w-full bg-white p-4 rounded-xl shadow border-l-4 border-red-400 text-left hover:shadow-lg transition transform hover:-translate-y-1"><div className="font-bold text-lg">🏆 Stage 2：一日生存戰</div><div className="text-sm text-gray-500">挑戰一日三餐任務，解鎖人格！</div></button>
+                            <button onClick={() => startLevel('STORY')} className="w-full bg-white p-4 rounded-xl shadow border-l-4 border-purple-400 text-left hover:shadow-lg transition transform hover:-translate-y-1"><div className="font-bold text-lg">🏆 Stage 2：一日生存戰</div><div className="text-sm text-gray-500">挑戰一日三餐任務，解鎖人格！</div></button>
                         </div>
                     </div>
                 );
@@ -762,6 +814,31 @@
                                         <div className="font-bold text-xl text-gray-800 mb-1 group-hover:text-blue-600">{level.title}</div>
                                         <div className="text-sm text-gray-500 mb-2">{level.desc}</div>
                                         <div className="text-xs font-mono bg-blue-50 text-blue-600 inline-block px-2 py-1 rounded">🎯 {level.objective}</div>
+                                    </button>
+                                ))}
+                            </div>
+                            <button onClick={() => setGameState("STAGES")} className="mt-8 text-gray-400 hover:text-gray-600 text-sm font-bold">返回主選單</button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === "STORY_MENU") {
+                return (
+                    <div className="min-h-screen p-6 bg-purple-50 flex flex-col items-center justify-center text-center fade-in">
+                        <div className="w-full max-w-sm">
+                            <h2 className="text-3xl font-bold mb-6 text-purple-900">🏆 一日生存戰</h2>
+                            <p className="text-gray-600 mb-6 text-sm">請選擇今天的飲食目標：</p>
+                            <div className="space-y-4">
+                                {stages.STORY.subLevels.map(level => (
+                                    <button 
+                                        key={level.id}
+                                        onClick={() => startSubLevel(level)}
+                                        className="w-full bg-white p-6 rounded-xl shadow-md border-2 border-purple-100 hover:border-purple-400 text-left hover:shadow-lg transition-all group"
+                                    >
+                                        <div className="font-bold text-xl text-gray-800 mb-1 group-hover:text-purple-600">{level.title}</div>
+                                        <div className="text-sm text-gray-500 mb-2">{level.desc}</div>
+                                        <div className="text-xs font-mono bg-purple-50 text-purple-600 inline-block px-2 py-1 rounded">🎯 {level.objective}</div>
                                     </button>
                                 ))}
                             </div>
@@ -801,16 +878,22 @@
                 const trayF = tray.reduce((acc, f) => acc + (f.f || 0), 0);
                 const trayCal = tray.reduce((acc, f) => acc + (f.calories || 0), 0);
 
+                const handleBack = () => {
+                    if (gameState === "TUTORIAL_PLAY") setGameState("TUTORIAL_MENU");
+                    else if (gameState === "STORY_PLAY") setGameState("STORY_MENU");
+                    else setGameState("STAGES");
+                };
+
                 return (
                     <div className="h-screen bg-slate-50 flex flex-col relative fade-in overflow-hidden">
                         <div className="bg-white shadow-md z-20 flex-shrink-0 flex flex-col items-center pb-2">
                             <div className="w-full p-2 flex justify-between items-center border-b">
-                                <button onClick={() => gameState === "TUTORIAL_PLAY" ? setGameState("TUTORIAL_MENU") : setGameState("STAGES")} className="text-gray-400"><div className="w-6 h-6"><Icons.X /></div></button>
+                                <button onClick={handleBack} className="text-gray-400"><div className="w-6 h-6"><Icons.X /></div></button>
                                 <h2 className="font-bold text-gray-800 line-clamp-1">{title}</h2>
                                 <div className="w-6"></div>
                             </div>
                             
-                            {/* --- 新增：將比例條移到上方 (所有關卡通用) --- */}
+                            {/* 比例條移至上方 (所有關卡通用) */}
                             <div className="w-full mt-2">
                                 <NutritionRatioBar p={trayP} c={trayC} f={trayF} calories={trayCal} />
                             </div>
@@ -839,7 +922,16 @@
                         </div>
 
                         <FoodInfoModal food={selectedFoodInfo} onClose={() => setSelectedFoodInfo(null)} />
-                        <TutorialFeedbackModal feedback={tutorialFeedback} onClose={() => setTutorialFeedback(null)} onRetry={() => { setTutorialFeedback(null); setTray([]); }} onNext={() => { setTutorialFeedback(null); setGameState("TUTORIAL_MENU"); }} onBack={() => { setTutorialFeedback(null); setGameState("TUTORIAL_MENU"); }} />
+                        
+                        {gameState === "TUTORIAL_PLAY" && (
+                            <TutorialFeedbackModal 
+                                feedback={tutorialFeedback} 
+                                onClose={() => setTutorialFeedback(null)} 
+                                onRetry={() => { setTutorialFeedback(null); setTray([]); }} 
+                                onNext={() => { setTutorialFeedback(null); setGameState("TUTORIAL_MENU"); }} 
+                                onBack={() => { setTutorialFeedback(null); setGameState("TUTORIAL_MENU"); }} 
+                            />
+                        )}
                         
                         {gameState === "STORY_PLAY" && storyModalOpen && storyInfo && (
                             <StoryModal 
@@ -893,9 +985,26 @@
                 const personaId = calculatePersona(dailyStats);
                 const persona = personaDatabase.find(p => p.id === personaId);
                 const dailyAdvices = getNutritionFeedback(dailyStats, userProfile?.tdee || 2000);
+                
+                let goalResult = null;
+                if (currentSubLevel && currentSubLevel.criteria) {
+                    const isSuccess = currentSubLevel.criteria(dailyStats, userProfile?.tdee || 2000);
+                    goalResult = {
+                        success: isSuccess,
+                        title: isSuccess ? "🎉 目標達成！" : "💔 目標失敗...",
+                        msg: isSuccess ? currentSubLevel.successMsg : currentSubLevel.failMsg
+                    };
+                }
 
                 return (
                     <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in overflow-y-auto">
+                        {goalResult && (
+                            <div className={`w-full max-w-sm p-4 rounded-xl mb-6 border-2 shadow-lg animate-[popIn_0.5s_ease-out] ${goalResult.success ? 'bg-green-900/40 border-green-500' : 'bg-red-900/40 border-red-500'}`}>
+                                <h2 className={`text-2xl font-black mb-1 ${goalResult.success ? 'text-green-400' : 'text-red-400'}`}>{goalResult.title}</h2>
+                                <p className="text-sm text-gray-200">{goalResult.msg}</p>
+                            </div>
+                        )}
+
                         <div className="mb-6 flex justify-center relative w-48 h-48 mx-auto">
                             {persona.image && persona.image.length > 0 ? (
                                 <img 
@@ -935,7 +1044,13 @@
                         </div>
                         <div className="flex gap-4">
                             <button onClick={() => setGameState("STAGES")} className="bg-gray-700 text-white px-6 py-3 rounded-full font-bold hover:bg-gray-600">回到選單</button>
-                            <button onClick={() => startLevel('STORY')} className="bg-yellow-400 text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 shadow-lg transform transition hover:-translate-y-1">🔄 重新挑戰</button>
+                            <button onClick={() => {
+                                setStoryMealIndex(0);
+                                setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 });
+                                setTray([]);
+                                setGameState("STORY_PLAY");
+                                setStoryModalOpen(true);
+                            }} className="bg-yellow-400 text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 shadow-lg transform transition hover:-translate-y-1">🔄 重新挑戰</button>
                         </div>
                     </div>
                 );
