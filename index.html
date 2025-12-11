@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fffbeb; } /* 改為暖色系背景 */
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fffbeb; } 
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -78,13 +78,13 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        /* 隱藏捲軸但保持功能 (Chrome/Safari/Webkit) */
+        /* 隱藏捲軸但保持功能 */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
         .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -107,31 +107,31 @@
         };
 
         const foodDatabase = [
-            { id: 4, name: "小木屋鬆餅(鮮奶油)", emoji: "🧇", calories: 450, p: 8, c: 55, f: 22, health: -8, mood: 15, tags: ['snack', 'restaurant'], desc: "甜蜜的下午茶首選，但鮮奶油熱量不容小覷。" },
-            { id: 6, name: "鳳城三寶飯", emoji: "🍛", calories: 900, p: 35, c: 110, f: 35, health: -10, mood: 20, tags: ['restaurant', 'night_market'], desc: "肉量十足的港式燒臘，醬汁下飯但油脂爆表。" },
-            { id: 8, name: "自助餐燙青菜", emoji: "🥬", calories: 50, p: 2, c: 8, f: 1, health: 20, mood: -5, tags: ['restaurant', 'side'], desc: "外食族的救星，清淡健康補足纖維。" },
-            { id: 9, name: "7-11 雞胸肉", emoji: "💪", calories: 130, p: 24, c: 2, f: 2, health: 15, mood: -5, tags: ['convenience', 'tutorial_correct'], desc: "健身族必備，隨時補充優質低脂蛋白。" },
-            { id: 10, name: "超商茶葉蛋", emoji: "🥚", calories: 75, p: 7, c: 1, f: 5, health: 15, mood: 5, tags: ['convenience', 'breakfast', 'snack'], desc: "24小時都能買到的優質蛋白，減脂救星。" },
-            { id: 19, name: "小霸王-好吃烤雞飯", emoji: "🍱", calories: 741, p: 42, c: 78, f: 29, health: 10, mood: 25, tags: ['restaurant', 'night_market'], desc: "鮮嫩烤雞配上半熟蛋，營養豐富但份量也不小。" },
-            { id: 20, name: "安好食-醬燒牛蛋餅", emoji: "🌯", calories: 476, p: 20, c: 36, f: 28, health: -5, mood: 30, tags: ['breakfast', 'restaurant'], desc: "酥脆蛋餅配上濃郁醬燒牛，早餐的豪華享受。" },
-            { id: 21, name: "喬品-餛飩湯", emoji: "🥣", calories: 150, p: 8, c: 10, f: 6, health: 5, mood: -10, tags: ['restaurant', 'night_market'], desc: "胡椒加爆不小心飄進鼻子狂打噴嚏，但湯頭不錯。" },
-            { id: 22, name: "莫宰羊-羊肉炒麵", emoji: "🍝", calories: 800, p: 25, c: 70, f: 40, health: -15, mood: 10, tags: ['restaurant', 'night_market'], desc: "未接電話顯示螢幕上，沙茶辣椒特別香。" },
-            { id: 23, name: "福樂可可蛋白牛乳", emoji: "🥛", calories: 200, p: 21, c: 24, f: 3, health: 15, mood: 15, tags: ['convenience', 'drink'], desc: "蛋白質補充的好選擇，但糖分偏高要注意。" },
-            { id: 24, name: "蔥燉-牛肉餛飩麵", emoji: "🍜", calories: 430, p: 30, c: 65, f: 12, health: 10, mood: 20, tags: ['restaurant'], desc: "一次滿足牛肉與餛飩的願望，湯頭濃郁暖胃。" },
-            { id: 25, name: "uPoke-雞胸肉餐盒", emoji: "🥗", calories: 558, p: 45, c: 60, f: 12, health: 25, mood: 10, tags: ['restaurant'], desc: "清爽低負擔的健康餐，增肌減脂的好幫手。" },
-            { id: 26, name: "全家-烤蛋白餐盒", emoji: "🍱", calories: 438, p: 28, c: 58, f: 11, health: 20, mood: 15, tags: ['convenience'], desc: "健身後的方便選擇，方塊蛋白口感獨特。" },
-            { id: 27, name: "摩斯-海洋珍珠堡", emoji: "🦐", calories: 404, p: 10, c: 72, f: 8, health: -5, mood: 10, tags: ['fastfood'], desc: "建議不要修林秋燕的政府檔案管理，她會叫你自己想辦法跑到林口。" },
-            { id: 28, name: "麥當勞-麥香雞", emoji: "🍔", calories: 380, p: 15, c: 45, f: 16, health: -10, mood: 10, tags: ['fastfood'], desc: "經典平價選擇，但美乃滋是熱量來源。" },
-            { id: 29, name: "麥當勞-中薯", emoji: "🍟", calories: 350, p: 5, c: 45, f: 17, health: -15, mood: 20, tags: ['fastfood', 'snack', 'tutorial_trap'], desc: "現炸酥脆無法擋，油脂與澱粉是減肥大敵。" },
-            { id: 30, name: "麥當勞-4塊雞塊", emoji: "🍗", calories: 180, p: 10, c: 12, f: 11, health: -5, mood: 15, tags: ['fastfood', 'snack', 'tutorial_wrong'], desc: "解嘴饞的小點心，注意鈉含量。" },
-            { id: 31, name: "麥當勞-四盎司牛肉堡", emoji: "🥩", calories: 540, p: 30, c: 35, f: 28, health: -10, mood: 25, tags: ['fastfood'], desc: "厚實牛肉多汁滿足，但飽和脂肪較高。" },
-            { id: 32, name: "麥當勞-大麥克", emoji: "🍔", calories: 530, p: 27, c: 45, f: 26, health: -20, mood: 30, tags: ['fastfood'], desc: "雙層牛肉的經典美味，醬料熱量高。" },
-            { id: 33, name: "麥當勞-麥脆雞腿(1塊)", emoji: "🍗", calories: 370, p: 20, c: 15, f: 25, health: -15, mood: 25, tags: ['fastfood'], desc: "皮脆肉嫩超誘人，去皮吃能減少很多熱量。" },
-            { id: 34, name: "7-11-黃金玉米棒", emoji: "🌽", calories: 150, p: 5, c: 28, f: 2, health: 15, mood: 10, tags: ['convenience', 'snack'], desc: "甜脆多汁，比起洋芋片健康一百倍的追劇零食。" },
-            { id: 35, name: "全家-夯番薯(中)", emoji: "🍠", calories: 240, p: 3, c: 56, f: 1, health: 20, mood: 15, tags: ['convenience', 'snack'], desc: "綿密香甜，連皮一起吃，纖維質大爆發！" },
-            { id: 36, name: "7-11-顆粒燕麥飲", emoji: "🌾", calories: 125, p: 4, c: 22, f: 1, health: 15, mood: 5, tags: ['convenience', 'drink'], desc: "喝完覺得有點健康，無負擔的燕麥顆粒口感。" },
-            { id: 37, name: "YuPoke-雞肉Poke", emoji: "🥗", calories: 572, p: 28, c: 70, f: 20, health: 20, mood: 15, tags: ['restaurant'], desc: "公館經典店家，配菜冷食清爽開胃。" },
-            { id: 38, name: "7-11-北海道蕎麥沾麵", emoji: "🍜", calories: 336, p: 14, c: 59, f: 5, health: 10, mood: 15, tags: ['convenience'], desc: "打折時的高CP值選擇，沾醬配冷麵吃起來很有味。" }
+            { id: 4, name: "小木屋鬆餅(鮮奶油)", emoji: "🧇", calories: 450, p: 8, c: 55, f: 22, tags: ['snack', 'restaurant'], desc: "甜蜜的下午茶首選，但鮮奶油熱量不容小覷。" },
+            { id: 6, name: "鳳城三寶飯", emoji: "🍛", calories: 900, p: 35, c: 110, f: 35, tags: ['restaurant', 'night_market'], desc: "肉量十足的港式燒臘，醬汁下飯但油脂爆表。" },
+            { id: 8, name: "自助餐燙青菜", emoji: "🥬", calories: 50, p: 2, c: 8, f: 1, tags: ['restaurant', 'side'], desc: "外食族的救星，清淡健康補足纖維。" },
+            { id: 9, name: "7-11 雞胸肉", emoji: "💪", calories: 130, p: 24, c: 2, f: 2, tags: ['convenience', 'tutorial_correct'], desc: "健身族必備，隨時補充優質低脂蛋白。" },
+            { id: 10, name: "超商茶葉蛋", emoji: "🥚", calories: 75, p: 7, c: 1, f: 5, tags: ['convenience', 'breakfast', 'snack'], desc: "24小時都能買到的優質蛋白，減脂救星。" },
+            { id: 19, name: "小霸王-好吃烤雞飯", emoji: "🍱", calories: 741, p: 42, c: 78, f: 29, tags: ['restaurant', 'night_market'], desc: "鮮嫩烤雞配上半熟蛋，營養豐富但份量也不小。" },
+            { id: 20, name: "安好食-醬燒牛蛋餅", emoji: "🌯", calories: 476, p: 20, c: 36, f: 28, tags: ['breakfast', 'restaurant'], desc: "酥脆蛋餅配上濃郁醬燒牛，早餐的豪華享受。" },
+            { id: 21, name: "喬品-餛飩湯", emoji: "🥣", calories: 150, p: 8, c: 10, f: 6, tags: ['restaurant', 'night_market'], desc: "胡椒加爆不小心飄進鼻子狂打噴嚏，但湯頭不錯。" },
+            { id: 22, name: "莫宰羊-羊肉炒麵", emoji: "🍝", calories: 800, p: 25, c: 70, f: 40, tags: ['restaurant', 'night_market'], desc: "未接電話顯示螢幕上，沙茶辣椒特別香。" },
+            { id: 23, name: "福樂可可蛋白牛乳", emoji: "🥛", calories: 200, p: 21, c: 24, f: 3, tags: ['convenience', 'drink'], desc: "蛋白質補充的好選擇，但糖分偏高要注意。" },
+            { id: 24, name: "蔥燉-牛肉餛飩麵", emoji: "🍜", calories: 430, p: 30, c: 65, f: 12, tags: ['restaurant'], desc: "一次滿足牛肉與餛飩的願望，湯頭濃郁暖胃。" },
+            { id: 25, name: "uPoke-雞胸肉餐盒", emoji: "🥗", calories: 558, p: 45, c: 60, f: 12, tags: ['restaurant'], desc: "清爽低負擔的健康餐，增肌減脂的好幫手。" },
+            { id: 26, name: "全家-烤蛋白餐盒", emoji: "🍱", calories: 438, p: 28, c: 58, f: 11, tags: ['convenience'], desc: "健身後的方便選擇，方塊蛋白口感獨特。" },
+            { id: 27, name: "摩斯-海洋珍珠堡", emoji: "🦐", calories: 404, p: 10, c: 72, f: 8, tags: ['fastfood'], desc: "建議不要修林秋燕的政府檔案管理，她會叫你自己想辦法跑到林口。" },
+            { id: 28, name: "麥當勞-麥香雞", emoji: "🍔", calories: 380, p: 15, c: 45, f: 16, tags: ['fastfood'], desc: "經典平價選擇，但美乃滋是熱量來源。" },
+            { id: 29, name: "麥當勞-中薯", emoji: "🍟", calories: 350, p: 5, c: 45, f: 17, tags: ['fastfood', 'snack', 'tutorial_trap'], desc: "現炸酥脆無法擋，油脂與澱粉是減肥大敵。" },
+            { id: 30, name: "麥當勞-4塊雞塊", emoji: "🍗", calories: 180, p: 10, c: 12, f: 11, tags: ['fastfood', 'snack', 'tutorial_wrong'], desc: "解嘴饞的小點心，注意鈉含量。" },
+            { id: 31, name: "麥當勞-四盎司牛肉堡", emoji: "🥩", calories: 540, p: 30, c: 35, f: 28, tags: ['fastfood'], desc: "厚實牛肉多汁滿足，但飽和脂肪較高。" },
+            { id: 32, name: "麥當勞-大麥克", emoji: "🍔", calories: 530, p: 27, c: 45, f: 26, tags: ['fastfood'], desc: "雙層牛肉的經典美味，醬料熱量高。" },
+            { id: 33, name: "麥當勞-麥脆雞腿(1塊)", emoji: "🍗", calories: 370, p: 20, c: 15, f: 25, tags: ['fastfood'], desc: "皮脆肉嫩超誘人，去皮吃能減少很多熱量。" },
+            { id: 34, name: "7-11-黃金玉米棒", emoji: "🌽", calories: 150, p: 5, c: 28, f: 2, tags: ['convenience', 'snack'], desc: "甜脆多汁，比起洋芋片健康一百倍的追劇零食。" },
+            { id: 35, name: "全家-夯番薯(中)", emoji: "🍠", calories: 240, p: 3, c: 56, f: 1, tags: ['convenience', 'snack'], desc: "綿密香甜，連皮一起吃，纖維質大爆發！" },
+            { id: 36, name: "7-11-顆粒燕麥飲", emoji: "🌾", calories: 125, p: 4, c: 22, f: 1, tags: ['convenience', 'drink'], desc: "喝完覺得有點健康，無負擔的燕麥顆粒口感。" },
+            { id: 37, name: "YuPoke-雞肉Poke", emoji: "🥗", calories: 572, p: 28, c: 70, f: 20, tags: ['restaurant'], desc: "公館經典店家，配菜冷食清爽開胃。" },
+            { id: 38, name: "7-11-北海道蕎麥沾麵", emoji: "🍜", calories: 336, p: 14, c: 59, f: 5, tags: ['convenience'], desc: "打折時的高CP值選擇，沾醬配冷麵吃起來很有味。" }
         ];
 
         // --- 2. 飲食人格 ---
@@ -141,7 +141,7 @@
             { id: 'carb_cultist', name: '澱粉教徒', emoji: '🍚', image: './achievement_carb_cultist.png', desc: '飯、麵、麵包...沒有澱粉的一餐對你來說只是點心。', color: 'bg-orange-100 text-orange-800' },
             { id: 'faster', name: '絕食系修仙者', emoji: '🧘', image: './achievement_faster.png', desc: '吃這麼少，你是準備得道成仙了嗎？', color: 'bg-gray-100 text-gray-800' },
             { id: 'nutritionist', name: '營養精算師', emoji: '🥗', image: './achievement_nutritionist.png', desc: '三大營養素比例完美，你是 AI 吧？', color: 'bg-green-100 text-green-800' },
-            { id: 'happy_chubby', name: '快樂肥宅', emoji: '😈', image: './achievement_happy_chubby.png', desc: '人生苦短，及時行樂，體重計什麼的先丟掉吧。', color: 'bg-purple-100 text-purple-800' },
+            { id: 'happy_chubby', name: '隨性美食家', emoji: '😈', image: './achievement_happy_chubby.png', desc: '飲食隨心所欲，雖然稍微超出健康標準，但吃得開心最重要！', color: 'bg-purple-100 text-purple-800' },
         ];
 
         // --- 3. 關卡設定 ---
@@ -229,10 +229,16 @@
                         desc: '控制熱量，保持飽足感，燃燒脂肪吧！',
                         objective: '熱量<TDEE 且 蛋白質充足',
                         color: 'from-orange-500 to-red-500',
-                        // 判定函式: 熱量 60%~95% TDEE, 蛋白質比例 > 25%
                         criteria: (stats, tdee) => {
                             const pRatio = (stats.totalP * 4) / (stats.calories || 1);
                             return stats.calories < tdee * 0.95 && stats.calories > tdee * 0.6 && pRatio > 0.25;
+                        },
+                        analyzeFail: (stats, tdee) => {
+                             const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                             if (stats.calories >= tdee * 0.95) return "失敗原因：熱量太高了！減脂需要創造「熱量赤字」，少吃點炸物或澱粉吧。";
+                             if (stats.calories <= tdee * 0.6) return "失敗原因：熱量太低了！吃太少會讓代謝下降，反而瘦不下來喔。";
+                             if (pRatio <= 0.25) return "失敗原因：蛋白質不足！減脂期蛋白質不夠會導致肌肉流失，多吃點肉或蛋。";
+                             return "失敗原因：未達標，請重新調整飲食比例。";
                         },
                         successMsg: "減脂挑戰成功！熱量控制得宜，蛋白質也足夠，是完美的減脂日！",
                         failMsg: "減脂挑戰失敗。熱量可能超標，或是蛋白質攝取不足導致肌肉流失喔。"
@@ -243,14 +249,31 @@
                         desc: '不極端飲食，追求身心靈的平衡。',
                         objective: '熱量維持 TDEE，P/C/F 均衡',
                         color: 'from-blue-400 to-indigo-500',
-                        // 判定函式: 熱量 90%~110% TDEE, 比例不極端
                         criteria: (stats, tdee) => {
                              const pRatio = (stats.totalP * 4) / (stats.calories || 1);
                              const fRatio = (stats.totalF * 9) / (stats.calories || 1);
                              const cRatio = (stats.totalC * 4) / (stats.calories || 1);
-                             const calOk = stats.calories >= tdee * 0.9 && stats.calories <= tdee * 1.1;
-                             const ratioOk = pRatio > 0.15 && pRatio < 0.4 && fRatio > 0.15 && fRatio < 0.45 && cRatio > 0.3 && cRatio < 0.65;
-                             return calOk && ratioOk;
+                             
+                             const calOk = stats.calories >= tdee * 0.85 && stats.calories <= tdee * 1.15;
+                             // 確保脂肪比例不超過 0.45 (油王門檻) 且絕對值不超過 80g
+                             const ratioOk = pRatio > 0.12 && pRatio < 0.45 && 
+                                             fRatio > 0.15 && fRatio <= 0.45 && 
+                                             cRatio > 0.25 && cRatio < 0.70;
+                             const absoluteOk = stats.totalF <= 80;
+
+                             return calOk && ratioOk && absoluteOk;
+                        },
+                        analyzeFail: (stats, tdee) => {
+                            const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                            const fRatio = (stats.totalF * 9) / (stats.calories || 1);
+                            const cRatio = (stats.totalC * 4) / (stats.calories || 1);
+
+                            if (stats.calories < tdee * 0.85) return "失敗原因：熱量嚴重不足！均衡飲食不是要你餓肚子。";
+                            if (stats.calories > tdee * 1.15) return "失敗原因：熱量超標囉！均衡飲食也要控制總量。";
+                            if (fRatio > 0.45 || stats.totalF > 80) return "失敗原因：太油了！(超過 45% 或 80g) 這樣會變成公館油王喔。";
+                            if (cRatio > 0.7) return "失敗原因：澱粉太多！飯麵吃太多會營養不均。";
+                            if (pRatio < 0.12) return "失敗原因：蛋白質太少！肌肉需要營養修復。";
+                            return "失敗原因：三大營養素比例失衡，請參考上方比例條調整。";
                         },
                         successMsg: "均衡飲食成功！你的身體感謝你，維持了完美的平衡狀態。",
                         failMsg: "挑戰失敗。可能熱量太高/太低，或者某一項營養素比例失衡囉。"
@@ -261,10 +284,16 @@
                         desc: '為了變得更強壯！需要熱量盈餘與大量蛋白質。',
                         objective: '熱量 > TDEE 且 高蛋白',
                         color: 'from-green-500 to-emerald-600',
-                        // 判定函式: 熱量 105%~130% TDEE, 蛋白質比例 > 25%
                         criteria: (stats, tdee) => {
                             const pRatio = (stats.totalP * 4) / (stats.calories || 1);
                             return stats.calories > tdee * 1.05 && stats.calories < tdee * 1.4 && pRatio > 0.25;
+                        },
+                        analyzeFail: (stats, tdee) => {
+                             const pRatio = (stats.totalP * 4) / (stats.calories || 1);
+                             if (stats.calories <= tdee * 1.05) return "失敗原因：熱量不足！增肌需要「熱量盈餘」，要敢於多吃一點！";
+                             if (stats.calories >= tdee * 1.4) return "失敗原因：吃太多啦！雖然要增肌，但吃太多會變胖喔。";
+                             if (pRatio <= 0.25) return "失敗原因：蛋白質不夠！光吃熱量沒用，要有蛋白質才能長肌肉。";
+                             return "失敗原因：未達標，請多吃點肉並增加總熱量。";
                         },
                         successMsg: "增肌挑戰成功！熱量盈餘加上充足蛋白，肌肉正在生長！",
                         failMsg: "挑戰失敗。熱量不足以支持肌肉生長，或者蛋白質吃太少囉。"
@@ -273,19 +302,24 @@
             }
         };
 
-        const calculatePersona = (totalStats) => {
-            if (totalStats.calories === 0) return 'faster';
-            const pRatio = (totalStats.totalP * 4) / totalStats.calories;
-            const fRatio = (totalStats.totalF * 9) / totalStats.calories;
-            const cRatio = (totalStats.totalC * 4) / totalStats.calories;
-            
+        const calculatePersona = (totalStats, tdee) => {
             if (totalStats.calories < 800) return 'faster';
-            if (totalStats.calories > 2500 || (totalStats.mood > 85 && totalStats.health < 30)) return 'happy_chubby';
+            
+            const pRatio = (totalStats.totalP * 4) / (totalStats.calories || 1);
+            const fRatio = (totalStats.totalF * 9) / (totalStats.calories || 1);
+            const cRatio = (totalStats.totalC * 4) / (totalStats.calories || 1);
+            
             if (fRatio > 0.45 || totalStats.totalF > 80) return 'oil_king';
-            if (pRatio > 0.30) return 'protein_hunter';
             if (cRatio > 0.60) return 'carb_cultist';
-            if (pRatio >= 0.2 && pRatio <= 0.4 && fRatio >= 0.2 && fRatio <= 0.4) {
-                return 'nutritionist';
+            if (pRatio > 0.30) return 'protein_hunter';
+            
+            if (tdee) {
+                const calRatio = totalStats.calories / tdee;
+                if (calRatio >= 0.85 && calRatio <= 1.15 && 
+                    pRatio >= 0.2 && pRatio <= 0.4 && 
+                    fRatio >= 0.2 && fRatio <= 0.4) {
+                    return 'nutritionist';
+                }
             }
             return 'happy_chubby'; 
         };
@@ -296,7 +330,7 @@
             return Math.round(bmr * activityLevel);
         };
 
-        const getNutritionFeedback = (stats, targetCalories) => {
+        const getNutritionFeedback = (stats, targetCalories, foods) => {
             const { calories, totalP, totalC, totalF } = stats;
             const advice = [];
             
@@ -318,17 +352,76 @@
 
             if (pRatio < 0.15) advice.push(`🥩 蛋白質比例：太少 (肌肉修復原料不足，易流失肌肉)`);
             else if (pRatio > 0.4) advice.push(`💪 蛋白質比例：偏高 (沒重訓的話會變腎臟負擔喔)`);
-            else advice.push(`🥩 蛋白質比例：適中 (修復肌肉剛剛好)`);
+            else {
+                let extraMsg = "";
+                if (foods && foods.length > 0 && pRatio > 0.2) {
+                     const mvp = foods.reduce((prev, current) => (prev.p > current.p) ? prev : current, foods[0]);
+                     extraMsg = ` (MVP: ${mvp.name})`;
+                }
+                advice.push(`🥩 蛋白質比例：適中${extraMsg}`);
+            }
 
-            if (fRatio > 0.45) advice.push(`🛢️ 油脂比例：太高 (血管在尖叫了！小心發炎)`);
-            else if (fRatio < 0.15) advice.push(`🥑 油脂比例：太少 (皮膚會變乾澀，荷爾蒙需要好油)`);
-            else advice.push(`🥑 油脂比例：適中 (很棒！維持身體機能運作)`);
+            if (fRatio > 0.45 || totalF > 80) {
+                let culpritMsg = "";
+                if (foods && foods.length > 0) {
+                     const culprit = foods.reduce((prev, current) => (prev.f > current.f) ? prev : current, foods[0]);
+                     culpritMsg = `，兇手是「${culprit.name}」`;
+                }
+                advice.push(`🛢️ 油脂：太高 (血管在尖叫了${culpritMsg}！)`);
+            } else if (fRatio < 0.15) {
+                advice.push(`🥑 油脂比例：太少 (皮膚會變乾澀，荷爾蒙需要好油)`);
+            } else {
+                advice.push(`🥑 油脂比例：適中 (很棒！維持身體機能運作)`);
+            }
 
-            if (cRatio > 0.65) advice.push(`🍚 澱粉比例：過量 (血糖波動大，下午容易想睡)`);
-            else if (cRatio < 0.3) advice.push(`🍞 澱粉比例：不足 (大腦反應會變慢，也容易沒力氣)`);
-            else advice.push(`🍞 澱粉比例：適中 (精神體力維持得宜)`);
+            if (cRatio > 0.65) {
+                let culpritMsg = "";
+                if (foods && foods.length > 0) {
+                     const culprit = foods.reduce((prev, current) => (prev.c > current.c) ? prev : current, foods[0]);
+                     culpritMsg = `，原來是「${culprit.name}」`;
+                }
+                advice.push(`🍚 澱粉比例：過量 (血糖波動大${culpritMsg}，小心想睡)`);
+            } else if (cRatio < 0.3) {
+                advice.push(`🍞 澱粉比例：不足 (大腦反應會變慢，也容易沒力氣)`);
+            } else {
+                advice.push(`🍞 澱粉比例：適中 (精神體力維持得宜)`);
+            }
 
             return advice;
+        };
+
+        // --- 智慧洞察 (Smart Insights) ---
+        const getSmartInsights = (foods, stats, tdee) => {
+            const insights = [];
+            const { totalP, totalC, totalF, calories } = stats;
+
+            if (!foods || foods.length === 0) return insights;
+
+            const fRatio = (totalF * 9) / (calories || 1);
+            if (fRatio > 0.4) {
+                const culprit = foods.reduce((prev, current) => (prev.f > current.f) ? prev : current, foods[0]);
+                if (culprit) insights.push({ type: 'bad', icon: '🛢️', title: '油膩兇手', msg: `油脂偏高！罪魁禍首是「${culprit.name}」，它貢獻了 ${Math.round(culprit.f)}g 脂肪！`});
+            }
+
+            const cRatio = (totalC * 4) / (calories || 1);
+            if (cRatio > 0.6) {
+                const culprit = foods.reduce((prev, current) => (prev.c > current.c) ? prev : current, foods[0]);
+                if (culprit) insights.push({ type: 'bad', icon: '🍚', title: '澱粉炸彈', msg: `「${culprit.name}」是最大的醣分來源，小心血糖飆升想睡覺！`});
+            }
+
+            if (calories > tdee + 300) {
+                 const runMin = Math.round((calories - tdee) / 10);
+                 insights.push({ type: 'warn', icon: '🔥', title: '熱量囤積警報', msg: `多吃了 ${calories - tdee} 大卡，這相當於要慢跑 ${runMin} 分鐘才能消耗掉！`});
+            } else if (calories < tdee * 0.7) {
+                 insights.push({ type: 'warn', icon: '📉', title: '能量不足', msg: `熱量赤字過大，大腦運作效率可能會降低，小心變笨喔。`});
+            }
+
+            if (insights.length === 0) {
+                const bigOne = foods.reduce((prev, current) => (prev.calories > current.calories) ? prev : current, foods[0]);
+                insights.push({ type: 'neutral', icon: '🔍', title: '主要熱量來源', msg: `今天吃了「${bigOne.name}」，它佔了總熱量的 ${Math.round(bigOne.calories / calories * 100)}%。`});
+            }
+
+            return insights.slice(0, 3);
         };
 
         const TypewriterText = ({ text, speed = 30, onComplete }) => {
@@ -701,7 +794,7 @@
         };
 
         const App = () => {
-            const [gameState, setGameState] = useState("ONBOARDING"); 
+            const [gameState, setGameState] = useState("HOME"); 
             const [userProfile, setUserProfile] = useState(null);
             const [currentStage, setCurrentStage] = useState(null);
             const [currentSubLevel, setCurrentSubLevel] = useState(null); 
@@ -713,6 +806,8 @@
             const [tutorialFeedback, setTutorialFeedback] = useState(null); 
             const [selectedPersona, setSelectedPersona] = useState(null); 
             const [storyModalOpen, setStoryModalOpen] = useState(false);
+            const [eatenFoods, setEatenFoods] = useState([]); 
+            const [isHeaderShrunk, setIsHeaderShrunk] = useState(false);
 
             const addFood = (food) => {
                 if (tray.length < 6) {
@@ -737,12 +832,14 @@
                 setCurrentStage(stage);
                 setTray([]);
                 setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 });
+                setEatenFoods([]); // Reset
+                setIsHeaderShrunk(false);
                 
                 if (stage.type === 'tutorial_menu') {
                     setGameState("TUTORIAL_MENU");
                 } else if (stage.type === 'meal') {
                     setGameState("WARMUP_PLAY");
-                } else if (stage.type === 'story_menu') { // 修正為 story_menu
+                } else if (stage.type === 'story_menu') { 
                      setGameState("STORY_MENU");
                 } else if (stage.type === 'story') {
                     setStoryMealIndex(0);
@@ -759,7 +856,8 @@
                     setGameState("TUTORIAL_PLAY");
                 } else if (currentStage.id === 'STORY') {
                     setStoryMealIndex(0);
-                    setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 }); // Reset
+                    setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 }); 
+                    setEatenFoods([]); // Reset
                     setGameState("STORY_PLAY");
                     setStoryModalOpen(true);
                 }
@@ -783,6 +881,11 @@
                 const mHealth = tray.reduce((a, f) => a + f.health, 0); const mMood = tray.reduce((a, f) => a + f.mood, 0);
                 const newStats = { ...dailyStats, calories: dailyStats.calories + mCal, totalP: dailyStats.totalP + mP, totalC: dailyStats.totalC + mC, totalF: dailyStats.totalF + mF, health: Math.min(100, Math.max(0, dailyStats.health + mHealth)), mood: Math.min(100, Math.max(0, dailyStats.mood + mMood)) };
                 
+                // 累積吃過的食物 (僅限 Story Mode 或 Warmup Mode)
+                if (gameState === "STORY_PLAY" || gameState === "WARMUP_PLAY") {
+                    setEatenFoods(prev => [...prev, ...tray]);
+                }
+
                 setDailyStats(newStats); setTray([]);
                 if (gameState === "WARMUP_PLAY") { setGameState("WARMUP_RESULT"); } 
                 else if (gameState === "STORY_PLAY") { 
@@ -790,7 +893,7 @@
                         setStoryMealIndex(storyMealIndex + 1); 
                         setStoryModalOpen(true);
                     } else { 
-                        const personaId = calculatePersona(newStats); 
+                        const personaId = calculatePersona(newStats, userProfile?.tdee); 
                         unlockPersona(personaId); 
                         setGameState("RESULT"); 
                     } 
@@ -798,6 +901,30 @@
             };
 
             const handleOnboardingComplete = (profile) => { setUserProfile(profile); setGameState("ANALYSIS"); };
+
+            if (gameState === "HOME") {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-yellow-50 to-orange-100 fade-in">
+                        <div className="text-center mb-10">
+                            <div className="text-8xl mb-4 animate-bounce">🍱</div>
+                            <h1 className="text-5xl font-black text-gray-800 tracking-tight mb-4 drop-shadow-sm">
+                                台大吃貨<br/><span className="text-orange-500">生存戰</span>
+                            </h1>
+                            <p className="text-xl text-gray-600 font-bold tracking-widest">人格覺醒</p>
+                        </div>
+                        
+                        <button 
+                            onClick={() => setGameState("ONBOARDING")}
+                            className="w-full max-w-xs bg-gray-900 text-white text-xl font-bold py-4 rounded-2xl shadow-xl hover:bg-gray-800 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+                        >
+                            <span>開始體檢</span>
+                            <Icons.ArrowRight />
+                        </button>
+                        
+                        <p className="mt-8 text-sm text-gray-400">吃得飽也要吃的健康</p>
+                    </div>
+                );
+            }
 
             if (gameState === "ONBOARDING") { return <Onboarding onComplete={handleOnboardingComplete} />; }
             if (gameState === "ANALYSIS") { return <AnalysisResult profile={userProfile} onConfirm={() => setGameState("STAGES")} onBack={() => setGameState("ONBOARDING")} />; }
@@ -812,7 +939,7 @@
                         
                         <div className="text-center mb-10 z-10">
                             <h1 className="text-5xl font-black text-gray-800 tracking-tight mb-2 drop-shadow-sm">台大吃貨<br/><span className="text-orange-500">生存戰</span></h1>
-                            <p className="text-gray-600 font-medium">你能活過期末考嗎？</p>
+                            <p className="text-gray-600 font-medium">吃得飽也要吃的健康</p>
                         </div>
 
                         <div className="w-full max-w-sm grid gap-4 z-10">
@@ -957,23 +1084,42 @@
                     else setGameState("STAGES");
                 };
 
+                const tdee = userProfile?.tdee || 2000;
+                const currentTotalCal = (gameState === "STORY_PLAY" ? dailyStats.calories : 0) + trayCal;
+
                 return (
                     <div className="h-screen bg-slate-50 flex flex-col relative fade-in overflow-hidden">
-                        <div className="bg-white shadow-md z-20 flex-shrink-0 flex flex-col items-center pb-2">
+                        <div className={`bg-white shadow-md z-20 flex-shrink-0 flex flex-col items-center transition-all duration-300 ${isHeaderShrunk ? 'py-1' : 'pb-2'}`}>
                             <div className="w-full p-2 flex justify-between items-center border-b">
                                 <button onClick={handleBack} className="text-gray-400"><div className="w-6 h-6"><Icons.X /></div></button>
                                 <h2 className="font-bold text-gray-800 line-clamp-1">{title}</h2>
                                 <div className="w-6"></div>
                             </div>
                             
-                            {/* 比例條移至上方 (所有關卡通用) */}
-                            <div className="w-full mt-2">
+                            {/* --- 新增：Story Mode 累積熱量進度條 --- */}
+                            {gameState === "STORY_PLAY" && (
+                                <div className="w-full px-4 py-2 bg-purple-50 border-b border-purple-100 mb-2">
+                                    <div className="flex justify-between items-end mb-1">
+                                        <span className="text-xs font-bold text-purple-800">🔥 本日累積熱量</span>
+                                        <span className="text-xs font-mono text-purple-600">{Math.round(currentTotalCal)} / {tdee} kcal</span>
+                                    </div>
+                                    <div className="w-full bg-purple-200 rounded-full h-3 overflow-hidden shadow-inner">
+                                        <div 
+                                            className={`h-full rounded-full transition-all duration-500 ${currentTotalCal > tdee ? 'bg-red-500' : (currentTotalCal > tdee * 0.9 ? 'bg-yellow-500' : 'bg-green-500')}`} 
+                                            style={{ width: `${Math.min(100, (currentTotalCal / tdee) * 100)}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* 營養比例條：縮小時隱藏或變小 */}
+                            <div className={`w-full mt-2 transition-all duration-300 ${isHeaderShrunk ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 h-auto'}`}>
                                 <NutritionRatioBar p={trayP} c={trayC} f={trayF} calories={trayCal} />
                             </div>
 
-                            <div className="bg-yellow-50 text-yellow-800 text-xs px-3 py-1 rounded-full my-1 font-bold">💡 {hint}</div>
+                            {!isHeaderShrunk && <div className="bg-yellow-50 text-yellow-800 text-xs px-3 py-1 rounded-full my-1 font-bold transition-all">💡 {hint}</div>}
                             
-                            <div className="transform scale-90 -my-2">
+                            <div className={`transition-all duration-300 origin-center ${isHeaderShrunk ? 'scale-50 -my-12' : 'scale-90 -my-2'}`}>
                                 <RoundPlate tray={tray} onRemove={removeFromTray} />
                             </div>
 
@@ -984,7 +1130,14 @@
                             </button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 bg-slate-50">
+                        <div 
+                            className="flex-1 overflow-y-auto p-4 bg-slate-50"
+                            onScroll={(e) => {
+                                const scrollTop = e.currentTarget.scrollTop;
+                                if (scrollTop > 20 && !isHeaderShrunk) setIsHeaderShrunk(true);
+                                if (scrollTop <= 20 && isHeaderShrunk) setIsHeaderShrunk(false);
+                            }}
+                        >
                             <h3 className="font-bold text-gray-500 mb-2 text-sm">選擇食物</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pb-8">
                                 {visibleFoods.map(food => (
@@ -1020,19 +1173,20 @@
             if (gameState === "WARMUP_RESULT") {
                 const userTDEE = userProfile?.tdee || 2000;
                 const mealTarget = Math.round(userTDEE / 3); 
-                const advices = getNutritionFeedback(dailyStats, mealTarget);
+                // 傳入 eatenFoods (單餐)
+                const advices = getNutritionFeedback(dailyStats, mealTarget, eatenFoods.length > 0 ? eatenFoods : tray);
 
                 return (
                     <div className="min-h-screen p-6 bg-slate-900 text-white flex flex-col items-center justify-center text-center fade-in overflow-y-auto">
                         <div className="text-6xl mb-4">🍽️</div>
-                        <h2 className="text-2xl font-bold mb-2">本餐結算</h2>
-                        
+                        <h2 className="text-2xl font-bold mb-4">本餐結算</h2>
+
                         <div className="bg-blue-900/50 p-4 rounded-xl w-full max-w-sm mb-6 border border-blue-700/50 text-left">
                             <h3 className="text-xs text-blue-300 mb-2 uppercase font-bold tracking-wider">👩‍⚕️ 營養師的本餐點評</h3>
                             <ul className="text-sm space-y-2">
                                 {advices.map((advice, idx) => (
-                                    <li key={idx} className="flex gap-2">
-                                        <span>•</span>
+                                    <li key={idx} className="flex gap-2 items-start">
+                                        <span className="mt-1">•</span>
                                         <span>{advice}</span>
                                     </li>
                                 ))}
@@ -1055,17 +1209,24 @@
             }
 
             if (gameState === "RESULT") {
-                const personaId = calculatePersona(dailyStats);
+                const personaId = calculatePersona(dailyStats, userProfile?.tdee || 2000);
                 const persona = personaDatabase.find(p => p.id === personaId);
-                const dailyAdvices = getNutritionFeedback(dailyStats, userProfile?.tdee || 2000);
+                // 傳入 eatenFoods (整日)
+                const dailyAdvices = getNutritionFeedback(dailyStats, userProfile?.tdee || 2000, eatenFoods);
                 
                 let goalResult = null;
                 if (currentSubLevel && currentSubLevel.criteria) {
                     const isSuccess = currentSubLevel.criteria(dailyStats, userProfile?.tdee || 2000);
+                    let msg = isSuccess ? currentSubLevel.successMsg : currentSubLevel.failMsg;
+                    
+                    if (!isSuccess && currentSubLevel.analyzeFail) {
+                        msg = currentSubLevel.analyzeFail(dailyStats, userProfile?.tdee || 2000);
+                    }
+
                     goalResult = {
                         success: isSuccess,
                         title: isSuccess ? "🎉 目標達成！" : "💔 目標失敗...",
-                        msg: isSuccess ? currentSubLevel.successMsg : currentSubLevel.failMsg
+                        msg: msg
                     };
                 }
 
@@ -1097,8 +1258,8 @@
                             <h3 className="text-xs text-blue-300 mb-2 uppercase font-bold tracking-wider">👩‍⚕️ 營養師的每日總評</h3>
                             <ul className="text-sm space-y-2">
                                 {dailyAdvices.map((advice, idx) => (
-                                    <li key={idx} className="flex gap-2">
-                                        <span>•</span>
+                                    <li key={idx} className="flex gap-2 items-start">
+                                        <span className="mt-1">•</span>
                                         <span>{advice}</span>
                                     </li>
                                 ))}
@@ -1121,6 +1282,7 @@
                                 setStoryMealIndex(0);
                                 setDailyStats({ health: 50, mood: 50, calories: 0, totalP: 0, totalC: 0, totalF: 0 });
                                 setTray([]);
+                                setEatenFoods([]); // Reset
                                 setGameState("STORY_PLAY");
                                 setStoryModalOpen(true);
                             }} className="bg-yellow-400 text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 shadow-lg transform transition hover:-translate-y-1">🔄 重新挑戰</button>
