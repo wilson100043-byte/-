@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>台大吃貨生存戰：人格覺醒</title>
-    <!-- React & Babel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PDF 生成工具 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -116,23 +114,20 @@
             Download: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
         };
 
-        // --- 1. 真實資料庫 (已分類) ---
+        // --- 1. 真實資料庫 ---
         const foodDatabase = [
-            // 麥當勞 (一活)
             { id: 'mcd_1', name: "大麥克", restaurant: "麥當勞", emoji: "🍔", calories: 496, p: 26, c: 43, f: 25, tags: ['fastfood'] },
             { id: 'mcd_2', name: "勁辣雞腿堡", restaurant: "麥當勞", emoji: "🍔", calories: 461, p: 19, c: 42, f: 24, tags: ['fastfood'] },
             { id: 'mcd_3', name: "麥克雞塊(6塊)", restaurant: "麥當勞", emoji: "🍗", calories: 316, p: 18, c: 12, f: 22, tags: ['fastfood', 'snack'] },
             { id: 'mcd_4', name: "中薯", restaurant: "麥當勞", emoji: "🍟", calories: 313, p: 5, c: 36, f: 17, tags: ['fastfood', 'snack'] },
             { id: 'mcd_5', name: "蘋果派", restaurant: "麥當勞", emoji: "🍎", calories: 228, p: 2, c: 25, f: 13, tags: ['fastfood', 'snack'] },
             
-            // 里洋烘焙 (一活)
             { id: 'ly_1', name: "里洋波蘿麵包", restaurant: "里洋烘焙", emoji: "🍞", calories: 280, p: 7, c: 37, f: 11, tags: ['snack'] },
             { id: 'ly_2', name: "紅豆麵包", restaurant: "里洋烘焙", emoji: "🥯", calories: 253, p: 7, c: 45, f: 5, tags: ['snack'] },
             { id: 'ly_3', name: "奶酥麵包", restaurant: "里洋烘焙", emoji: "🥐", calories: 345, p: 9, c: 41, f: 16, tags: ['snack'] },
             { id: 'ly_4', name: "奶油捲麵包", restaurant: "里洋烘焙", emoji: "🥖", calories: 322, p: 9, c: 49, f: 10, tags: ['snack'] },
             { id: 'ly_5', name: "蜂蜜蛋糕", restaurant: "里洋烘焙", emoji: "🍰", calories: 242, p: 7, c: 42, f: 5, tags: ['snack'] },
 
-            // 食事場 (一活)
             { id: 'shishi_1', name: "雞排咖哩飯", restaurant: "食事場", emoji: "🍛", calories: 751, p: 24, c: 103, f: 27, tags: ['restaurant'] },
             { id: 'shishi_2', name: "火腿蛋炒飯", restaurant: "食事場", emoji: "🍚", calories: 663, p: 15, c: 99, f: 23, tags: ['restaurant'] },
             { id: 'shishi_3', name: "豬排蛋炒飯", restaurant: "食事場", emoji: "🥩", calories: 742, p: 26, c: 101, f: 26, tags: ['restaurant'] },
@@ -142,7 +137,6 @@
             { id: 'shishi_7', name: "糖醋雞丁飯", restaurant: "食事場", emoji: "🍗", calories: 706, p: 32, c: 86, f: 26, tags: ['restaurant'] },
             { id: 'shishi_8', name: "昆布豬肉鍋", restaurant: "食事場", emoji: "🍲", calories: 439, p: 33, c: 43, f: 15, tags: ['restaurant'] },
 
-            // 蛋白盒子 (一活)
             { id: 'pb_1', name: "打拋豬飯", restaurant: "蛋白盒子", emoji: "🍱", calories: 440, p: 13, c: 61, f: 16, tags: ['healthy'] },
             { id: 'pb_2', name: "雞胸飯", restaurant: "蛋白盒子", emoji: "🥗", calories: 439, p: 33, c: 61, f: 7, tags: ['healthy', 'tutorial_correct'] },
             { id: 'pb_3', name: "雞腿排飯", restaurant: "蛋白盒子", emoji: "🍗", calories: 475, p: 24, c: 61, f: 15, tags: ['healthy'] },
@@ -154,7 +148,6 @@
             { id: 'pb_9', name: "漢堡排餐盒", restaurant: "蛋白盒子", emoji: "🍔", calories: 439, p: 24, c: 61, f: 11, tags: ['healthy'] },
             { id: 'pb_10', name: "味噌烤鱸魚", restaurant: "蛋白盒子", emoji: "🐟", calories: 421, p: 32, c: 62, f: 5, tags: ['healthy'] },
 
-            // 糧晨 GET食 (一活)
             { id: 'lc_1', name: "培根蛋餅", restaurant: "糧晨GET食", emoji: "🌯", calories: 357, p: 15, c: 36, f: 17, tags: ['breakfast'] },
             { id: 'lc_2', name: "鮪魚蛋吐司", restaurant: "糧晨GET食", emoji: "🥪", calories: 442, p: 15, c: 37, f: 26, tags: ['breakfast'] },
             { id: 'lc_3', name: "草莓吐司", restaurant: "糧晨GET食", emoji: "🍞", calories: 149, p: 2, c: 33, f: 1, tags: ['breakfast', 'snack'] },
@@ -166,70 +159,60 @@
             { id: 'lc_9', name: "火腿玉米熱壓", restaurant: "糧晨GET食", emoji: "🥪", calories: 389, p: 10, c: 40, f: 21, tags: ['breakfast'] },
             { id: 'lc_10', name: "蘿蔔糕", restaurant: "糧晨GET食", emoji: "🥕", calories: 306, p: 2, c: 44, f: 14, tags: ['breakfast', 'snack'] },
 
-            // 四海遊龍 (一活) - 設定為一份8顆
             { id: 'sh_1', name: "招牌鍋貼(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 480, p: 16, c: 50, f: 24, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_2', name: "韭菜鍋貼(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 440, p: 18, c: 48, f: 20, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_3', name: "玉米水餃(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 360, p: 16, c: 48, f: 12, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_4', name: "牛汁乾麵", restaurant: "四海遊龍", emoji: "🍜", calories: 591, p: 22, c: 115, f: 5, tags: ['lunch', 'dinner'] },
             { id: 'sh_5', name: "肉燥拌麵", restaurant: "四海遊龍", emoji: "🍜", calories: 563, p: 20, c: 93, f: 12, tags: ['lunch', 'dinner'] },
 
-            // 水雲朵 (一活)
             { id: 'wd_1', name: "黑糖珍珠奶茶", restaurant: "水雲朵", emoji: "🧋", calories: 903, p: 1, c: 190, f: 8, tags: ['drink', 'snack'] },
             { id: 'wd_2', name: "伯爵鮮奶茶", restaurant: "水雲朵", emoji: "🥤", calories: 246, p: 10, c: 29, f: 10, tags: ['drink'] },
             { id: 'wd_3', name: "甘蔗青茶", restaurant: "水雲朵", emoji: "🍵", calories: 344, p: 0, c: 86, f: 0, tags: ['drink'] },
             { id: 'wd_4', name: "木瓜牛奶", restaurant: "水雲朵", emoji: "🥛", calories: 567, p: 14, c: 95, f: 14, tags: ['drink'] },
             { id: 'wd_5', name: "冬瓜茶", restaurant: "水雲朵", emoji: "🍹", calories: 301, p: 0, c: 75, f: 0, tags: ['drink'] },
 
-            // 品軒樓 (禮賢樓)
             { id: 'ph_1', name: "貴妃雞腿飯", restaurant: "品軒樓", emoji: "🍗", calories: 766, p: 38, c: 86, f: 30, tags: ['lunch', 'dinner'] },
             { id: 'ph_2', name: "酥炸豬排飯", restaurant: "品軒樓", emoji: "🥩", calories: 881, p: 42, c: 86, f: 41, tags: ['lunch', 'dinner'] },
             { id: 'ph_3', name: "蔥爆豬肉飯", restaurant: "品軒樓", emoji: "🍱", calories: 819, p: 38, c: 88, f: 35, tags: ['lunch', 'dinner'] },
             { id: 'ph_4', name: "宮保雞丁飯", restaurant: "品軒樓", emoji: "🍛", calories: 811, p: 37, c: 87, f: 35, tags: ['lunch', 'dinner'] },
             { id: 'ph_5', name: "蒲燒鯛魚飯", restaurant: "品軒樓", emoji: "🐟", calories: 729, p: 29, c: 88, f: 29, tags: ['lunch', 'dinner'] },
 
-            // 重慶抄手 (禮賢樓)
             { id: 'cc_1', name: "鮮菇雞湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 510, p: 18, c: 76, f: 15, tags: ['lunch', 'dinner'] },
             { id: 'cc_2', name: "雪菜肉絲湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 540, p: 24, c: 75, f: 16, tags: ['lunch', 'dinner'] },
             { id: 'cc_3', name: "原湯抄手湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 592, p: 25, c: 78, f: 20, tags: ['lunch', 'dinner'] },
             { id: 'cc_4', name: "香菇炸醬乾麵", restaurant: "重慶抄手", emoji: "🍝", calories: 576, p: 22, c: 77, f: 20, tags: ['lunch', 'dinner'] },
             { id: 'cc_5', name: "雙菇素乾麵", restaurant: "重慶抄手", emoji: "🍝", calories: 508, p: 16, c: 75, f: 16, tags: ['lunch', 'dinner'] },
 
-            // 路易莎 (禮賢樓)
             { id: 'louisa_1', name: "莊園級拿鐵", restaurant: "路易莎", emoji: "☕", calories: 296, p: 8, c: 48, f: 8, tags: ['drink'] },
             { id: 'louisa_2', name: "英式奶茶", restaurant: "路易莎", emoji: "🧋", calories: 280, p: 8, c: 44, f: 8, tags: ['drink'] },
             { id: 'louisa_3', name: "經典水果茶", restaurant: "路易莎", emoji: "🍹", calories: 300, p: 0, c: 75, f: 0, tags: ['drink'] },
             { id: 'louisa_4', name: "豬肉起司瑪芬", restaurant: "路易莎", emoji: "🍔", calories: 448, p: 17, c: 32, f: 28, tags: ['breakfast', 'snack'] },
             { id: 'louisa_5', name: "燻雞三明治", restaurant: "路易莎", emoji: "🥪", calories: 419, p: 15, c: 56, f: 15, tags: ['breakfast', 'snack'] },
 
-            // 龐德羅莎 (二活)
             { id: 'pond_1', name: "菲力牛排6oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 386, p: 36, c: 8, f: 23, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_2', name: "沙朗牛排6.5oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 378, p: 38, c: 10, f: 20, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_3', name: "牛小排8oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 592, p: 25, c: 8, f: 51, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_4', name: "炭烤雞腿排7oz", restaurant: "龐德羅莎", emoji: "🍗", calories: 352, p: 35, c: 8, f: 20, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_5', name: "美式烤豬肋排", restaurant: "龐德羅莎", emoji: "🍖", calories: 581, p: 33, c: 8, f: 46, tags: ['lunch', 'dinner', 'steak'] },
 
-            // 小蔬杭 (二活)
             { id: 'xsh_1', name: "塔香杏菇", restaurant: "小蔬杭", emoji: "🍄", calories: 69, p: 1, c: 5, f: 5, tags: ['side', 'vegetarian'] },
             { id: 'xsh_2', name: "厚煎蘿蔔糕", restaurant: "小蔬杭", emoji: "🥕", calories: 226, p: 4, c: 30, f: 10, tags: ['side', 'vegetarian'] },
             { id: 'xsh_3', name: "老皮嫩肉", restaurant: "小蔬杭", emoji: "🧊", calories: 130, p: 7, c: 4, f: 10, tags: ['side', 'vegetarian'] },
             { id: 'xsh_4', name: "臭味相投", restaurant: "小蔬杭", emoji: "🍲", calories: 200, p: 14, c: 0, f: 16, tags: ['side', 'vegetarian'] },
             { id: 'xsh_5', name: "炒年糕", restaurant: "小蔬杭", emoji: "🥘", calories: 277, p: 7, c: 51, f: 5, tags: ['side', 'vegetarian'] },
 
-            // SUBWAY (二活)
             { id: 'sub_1', name: "嫩切雞肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 300, p: 20, c: 41, f: 6, tags: ['healthy', 'fastfood'] },
             { id: 'sub_2', name: "火腿潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 317, p: 19, c: 44, f: 7, tags: ['healthy', 'fastfood'] },
             { id: 'sub_3', name: "燒烤牛肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 346, p: 21, c: 40, f: 7, tags: ['healthy', 'fastfood'] },
             { id: 'sub_4', name: "鮪魚潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 507, p: 22, c: 39, f: 29, tags: ['healthy', 'fastfood'] },
             { id: 'sub_5', name: "蛋沙拉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 421, p: 17, c: 41, f: 21, tags: ['healthy', 'fastfood'] },
 
-            // 曉鹿鳴樓 (二活)
             { id: 'xl_1', name: "銷魂東坡肉", restaurant: "曉鹿鳴樓", emoji: "🥩", calories: 461, p: 10, c: 4, f: 45, tags: ['lunch', 'dinner'] },
             { id: 'xl_2', name: "蔥爆牛肉絲", restaurant: "曉鹿鳴樓", emoji: "🥩", calories: 194, p: 18, c: 8, f: 10, tags: ['lunch', 'dinner'] },
             { id: 'xl_3', name: "左宗棠雞", restaurant: "曉鹿鳴樓", emoji: "🍗", calories: 118, p: 13, c: 3, f: 6, tags: ['lunch', 'dinner'] },
             { id: 'xl_4', name: "紅燒黃魚", restaurant: "曉鹿鳴樓", emoji: "🐟", calories: 114, p: 12, c: 3, f: 6, tags: ['lunch', 'dinner'] },
             { id: 'xl_5', name: "蝦醬空心菜", restaurant: "曉鹿鳴樓", emoji: "🥬", calories: 100, p: 5, c: 11, f: 4, tags: ['lunch', 'dinner'] },
 
-            // 曉鹿盒食 (二活 - 便當)
             { id: 'xlbox_1', name: "東坡肉便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 785, p: 45, c: 87, f: 48, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_2', name: "軟骨排便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 728, p: 47, c: 86, f: 41, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_3', name: "左宗棠雞便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 736, p: 35, c: 123, f: 31, tags: ['lunch', 'dinner'] },
@@ -237,14 +220,12 @@
             { id: 'xlbox_5', name: "白帶魚便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 790, p: 37, c: 91, f: 44, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_6', name: "九宮格御便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 764, p: 43, c: 87, f: 47, tags: ['lunch', 'dinner'] },
 
-            // 莫凡彼 (二活)
             { id: 'mv_1', name: "鴨胸義大利麵", restaurant: "莫凡彼", emoji: "🍝", calories: 650, p: 28, c: 76, f: 26, tags: ['lunch', 'dinner'] },
             { id: 'mv_2', name: "海鮮燉飯", restaurant: "莫凡彼", emoji: "🥘", calories: 676, p: 28, c: 78, f: 28, tags: ['lunch', 'dinner'] },
             { id: 'mv_3', name: "牛排青醬烤飯", restaurant: "莫凡彼", emoji: "🥩", calories: 768, p: 36, c: 84, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'mv_4', name: "海陸總匯披薩", restaurant: "莫凡彼", emoji: "🍕", calories: 732, p: 31, c: 80, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'mv_5', name: "焗烤蔬菜千層麵", restaurant: "莫凡彼", emoji: "🍝", calories: 653, p: 22, c: 76, f: 29, tags: ['lunch', 'dinner'] },
 
-            // 小木屋鬆餅 (新口味補充)
             { id: 'cabin_1', name: "藍莓鬆餅", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 379, p: 9, c: 66, f: 12, tags: ['snack'] },
             { id: 'cabin_2', name: "巧克力香蕉", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 587, p: 11, c: 84, f: 23, tags: ['snack'] },
             { id: 'cabin_3', name: "抹茶紅豆", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 667, p: 14, c: 99, f: 24, tags: ['snack'] },
@@ -253,28 +234,24 @@
             { id: 'cabin_6', name: "黑咖喱牛堡", restaurant: "小木屋鬆餅", emoji: "🍔", calories: 614, p: 19, c: 81, f: 24, tags: ['lunch', 'snack'] },
             { id: 'cabin_7', name: "海派蝦堡(單)", restaurant: "小木屋鬆餅", emoji: "🍤", calories: 154, p: 11, c: 11, f: 7, tags: ['snack'] },
 
-            // 椰林燒臘 (新增)
             { id: 'yl_1', name: "蔥油雞飯", restaurant: "椰林燒臘", emoji: "🍗", calories: 672, p: 30, c: 75, f: 28, tags: ['lunch', 'dinner'] },
             { id: 'yl_2', name: "叉燒飯", restaurant: "椰林燒臘", emoji: "🥩", calories: 681, p: 28, c: 77, f: 29, tags: ['lunch', 'dinner'] },
             { id: 'yl_3', name: "燒鴨飯", restaurant: "椰林燒臘", emoji: "🍗", calories: 689, p: 31, c: 76, f: 29, tags: ['lunch', 'dinner'] },
             { id: 'yl_4', name: "脆皮燒肉飯", restaurant: "椰林燒臘", emoji: "🥩", calories: 754, p: 32, c: 80, f: 34, tags: ['lunch', 'dinner'] },
             { id: 'yl_5', name: "三寶飯", restaurant: "椰林燒臘", emoji: "🍱", calories: 658, p: 28, c: 78, f: 26, tags: ['lunch', 'dinner'] },
 
-            // 比司多 (新增)
             { id: 'bs_1', name: "香雞排漢堡蛋", restaurant: "比司多", emoji: "🍔", calories: 554, p: 22, c: 58, f: 26, tags: ['breakfast', 'lunch'] },
             { id: 'bs_2', name: "烤火腿蛋吐司", restaurant: "比司多", emoji: "🥪", calories: 421, p: 16, c: 40, f: 21, tags: ['breakfast'] },
             { id: 'bs_3', name: "烤鮪魚蛋吐司", restaurant: "比司多", emoji: "🥪", calories: 392, p: 12, c: 41, f: 20, tags: ['breakfast'] },
             { id: 'bs_4', name: "玉米蛋餅", restaurant: "比司多", emoji: "🌯", calories: 352, p: 10, c: 42, f: 16, tags: ['breakfast'] },
             { id: 'bs_5', name: "蘿蔔糕", restaurant: "比司多", emoji: "🥕", calories: 374, p: 14, c: 48, f: 14, tags: ['breakfast', 'snack'] },
 
-            // 壹番屋 (新增)
             { id: 'ich_1', name: "炸雞塊咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 890, p: 42, c: 86, f: 42, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_2', name: "炸豬排咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 925, p: 44, c: 86, f: 45, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_3', name: "漢堡咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 866, p: 44, c: 87, f: 38, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_4', name: "麻婆咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 741, p: 33, c: 78, f: 33, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_5', name: "蔬菜咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 684, p: 28, c: 80, f: 28, tags: ['lunch', 'dinner', 'restaurant'] },
 
-            // 夏威夷爭鮮飯 (新增)
             { id: 'hw_1', name: "壽喜燒牛肉飯", restaurant: "夏威夷", emoji: "🐮", calories: 750, p: 33, c: 84, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'hw_2', name: "生鮭魚飯", restaurant: "夏威夷", emoji: "🐟", calories: 602, p: 27, c: 82, f: 18, tags: ['lunch', 'dinner', 'healthy'] },
             { id: 'hw_3', name: "蒜味鮮白蝦飯", restaurant: "夏威夷", emoji: "🦐", calories: 579, p: 27, c: 82, f: 16, tags: ['lunch', 'dinner', 'healthy'] },
@@ -282,7 +259,7 @@
             { id: 'hw_5', name: "椒麻糖心蛋飯", restaurant: "夏威夷", emoji: "🥚", calories: 580, p: 25, c: 82, f: 17, tags: ['lunch', 'dinner'] },
         ];
 
-        // --- 2. 飲食人格 (更新詳細報告內容) ---
+        // --- 2. 飲食人格 ---
         const personaDatabase = [
             { 
                 id: 'faster', 
@@ -470,7 +447,7 @@
                 theme: 'green',
                 icon: '⚔️',
                 tags: [],
-                hint: "點擊 (i) 可以查看詳細數值與描述喔！"
+                hint: "點擊餐盤上的食物可以移除喔！"
             },
             STORY: {
                 id: 'STORY',
@@ -535,7 +512,6 @@
                              const cRatio = (stats.totalC * 4) / (stats.calories || 1);
                              
                              const calOk = stats.calories >= tdee * 0.85 && stats.calories <= tdee * 1.15;
-                             // 確保脂肪比例不超過 0.45 (油王門檻) 且絕對值不超過 80g
                              const ratioOk = pRatio > 0.12 && pRatio < 0.45 && 
                                              fRatio > 0.15 && fRatio <= 0.45 && 
                                              cRatio > 0.25 && cRatio < 0.70;
@@ -582,7 +558,6 @@
             }
         };
 
-        // --- 人格計算邏輯 (統一標準: F > 45% or > 80g) ---
         const calculatePersona = (totalStats, tdee) => {
             if (totalStats.calories < 800) return 'faster';
             
@@ -590,9 +565,7 @@
             const fRatio = (totalStats.totalF * 9) / (totalStats.calories || 1);
             const cRatio = (totalStats.totalC * 4) / (totalStats.calories || 1);
             
-            // 公館油王 (標準與 Review 一致)
             if (fRatio > 0.45 || totalStats.totalF > 80) return 'oil_king';
-            
             if (cRatio > 0.60) return 'carb_cultist';
             if (pRatio > 0.30) return 'protein_hunter';
             
@@ -613,13 +586,10 @@
             return Math.round(bmr * activityLevel);
         };
 
-        // --- 營養回饋邏輯 (整合智慧洞察 - 統一標準) ---
-        // 新增 foods 參數，用於抓兇手
         const getNutritionFeedback = (stats, targetCalories, foods) => {
             const { calories, totalP, totalC, totalF } = stats;
             const advice = [];
             
-            // 1. 熱量評估
             if (calories < targetCalories * 0.5) {
                 advice.push("⚠️ 熱量：嚴重不足 (這樣會掉肌肉變易胖體質喔！)");
             } else if (calories < targetCalories * 0.8) {
@@ -636,14 +606,9 @@
             const fRatio = (totalF * 9) / (calories || 1);
             const cRatio = (totalC * 4) / (calories || 1);
 
-            // 2. 營養素評估 + 智慧洞察 (抓兇手/MVP)
-            
-            // 蛋白質
-            if (pRatio < 0.15) {
-                advice.push(`🥩 蛋白質比例：太少 (肌肉修復原料不足，易流失肌肉)`);
-            } else if (pRatio > 0.4) {
-                advice.push(`💪 蛋白質比例：偏高 (沒重訓的話會變腎臟負擔喔)`);
-            } else {
+            if (pRatio < 0.15) advice.push(`🥩 蛋白質比例：太少 (肌肉修復原料不足，易流失肌肉)`);
+            else if (pRatio > 0.4) advice.push(`💪 蛋白質比例：偏高 (沒重訓的話會變腎臟負擔喔)`);
+            else {
                 let extraMsg = "";
                 if (foods && foods.length > 0 && pRatio > 0.2) {
                      const mvp = foods.reduce((prev, current) => (prev.p > current.p) ? prev : current, foods[0]);
@@ -652,7 +617,6 @@
                 advice.push(`🥩 蛋白質比例：適中${extraMsg}`);
             }
 
-            // 脂肪 (統一標準: > 45% 或 > 80g 為太高)
             if (fRatio > 0.45 || totalF > 80) {
                 let culpritMsg = "";
                 if (foods && foods.length > 0) {
@@ -666,7 +630,6 @@
                 advice.push(`🥑 油脂比例：適中 (很棒！維持身體機能運作)`);
             }
 
-            // 碳水
             if (cRatio > 0.65) {
                 let culpritMsg = "";
                 if (foods && foods.length > 0) {
@@ -683,7 +646,6 @@
             return advice;
         };
 
-        // --- 智慧洞察 (Smart Insights) ---
         const getSmartInsights = (foods, stats, tdee) => {
             const insights = [];
             const { totalP, totalC, totalF, calories } = stats;
@@ -702,11 +664,12 @@
                 if (culprit) insights.push({ type: 'bad', icon: '🍚', title: '澱粉炸彈', msg: `「${culprit.name}」是最大的醣分來源，小心血糖飆升想睡覺！`});
             }
 
-            // 3. 生理模擬 - 移除「能量不足」判定，只留熱量過高
             if (calories > tdee + 300) {
                  const runMin = Math.round((calories - tdee) / 10);
                  insights.push({ type: 'warn', icon: '🔥', title: '熱量囤積警報', msg: `多吃了 ${calories - tdee} 大卡，這相當於要慢跑 ${runMin} 分鐘才能消耗掉！`});
-            } 
+            } else if (calories < tdee * 0.7) {
+                 insights.push({ type: 'warn', icon: '📉', title: '能量不足', msg: `熱量赤字過大，大腦運作效率可能會降低，小心變笨喔。`});
+            }
 
             if (insights.length === 0) {
                 const bigOne = foods.reduce((prev, current) => (prev.calories > current.calories) ? prev : current, foods[0]);
@@ -869,12 +832,7 @@
                     onClick={() => onClick(food)}
                     className="relative flex flex-col p-2 rounded-xl bg-white border-2 border-slate-100 hover:border-yellow-400 hover:shadow-lg transition-all active:scale-95 group text-left h-full shadow-sm overflow-hidden"
                 >
-                    <div 
-                        onClick={(e) => { e.stopPropagation(); onInfo(food); }}
-                        className="absolute top-2 left-2 z-20 w-7 h-7 bg-white hover:bg-blue-50 border border-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-blue-500 shadow-sm transition-colors"
-                    >
-                        <Icons.Info />
-                    </div>
+                    {/* 移除了 Info 按鈕 */}
                     <div className="absolute top-2 right-2 z-10">
                         <span className="text-[10px] text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded-full border border-gray-200">{food.calories} kcal</span>
                     </div>
@@ -1027,9 +985,9 @@
 
         const Onboarding = ({ onComplete }) => {
             const [gender, setGender] = useState('male');
-            const [age, setAge] = useState(20);
-            const [height, setHeight] = useState(170);
-            const [weight, setWeight] = useState(65);
+            const [age, setAge] = useState('20');
+            const [height, setHeight] = useState('170');
+            const [weight, setWeight] = useState('65');
             const [activityLevel, setActivityLevel] = useState(1.375);
             const [error, setError] = useState(""); 
             const activityOptions = [
@@ -1041,13 +999,19 @@
             ];
             const handleSubmit = (e) => {
                 e.preventDefault();
-                if (age < 10 || age > 100) { setError("⚠️ 請輸入合理的年齡 (10 - 100歲)"); return; }
-                if (height < 50 || height > 250) { setError("⚠️ 請輸入合理的身高 (50 - 250公分)"); return; }
-                if (weight < 20 || weight > 300) { setError("⚠️ 請輸入合理的體重 (20 - 300公斤)"); return; }
+                
+                const numAge = parseFloat(age);
+                const numHeight = parseFloat(height);
+                const numWeight = parseFloat(weight);
+
+                if (!age || isNaN(numAge) || numAge < 10 || numAge > 100) { setError("⚠️ 請輸入合理的年齡 (10 - 100歲)"); return; }
+                if (!height || isNaN(numHeight) || numHeight < 50 || numHeight > 250) { setError("⚠️ 請輸入合理的身高 (50 - 250公分)"); return; }
+                if (!weight || isNaN(numWeight) || numWeight < 20 || numWeight > 300) { setError("⚠️ 請輸入合理的體重 (20 - 300公斤)"); return; }
                 setError(""); 
-                const tdee = calculateStats(gender, age, height, weight, activityLevel);
-                const proteinTarget = Math.round(weight * 2.0);
-                onComplete({ isCustom: true, gender, age, height, weight, tdee, proteinTarget });
+                
+                const tdee = calculateStats(gender, numAge, numHeight, numWeight, activityLevel);
+                const proteinTarget = Math.round(numWeight * 2.0);
+                onComplete({ isCustom: true, gender, age: numAge, height: numHeight, weight: numWeight, tdee, proteinTarget });
             };
             const handleSkip = () => { onComplete({ isCustom: false, gender: 'male', age: 20, height: 170, weight: 65, tdee: 2000, proteinTarget: 130 }); };
             return (
@@ -1057,8 +1021,38 @@
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {error && <div className="bg-red-50 text-red-500 text-xs p-2 rounded text-center font-bold animate-pulse">{error}</div>}
                             <div><label className="block text-xs font-bold text-gray-700 mb-1">生理性別</label><div className="flex gap-2"><button type="button" onClick={() => setGender('male')} className={`flex-1 py-2 rounded-lg border ${gender === 'male' ? 'bg-blue-100 border-blue-400 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-400'}`}>男</button><button type="button" onClick={() => setGender('female')} className={`flex-1 py-2 rounded-lg border ${gender === 'female' ? 'bg-pink-100 border-pink-400 text-pink-700' : 'bg-gray-50 border-gray-200 text-gray-400'}`}>女</button></div></div>
-                            <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-gray-700 mb-1">年齡 (歲)</label><input type="number" value={age} onChange={(e) => setAge(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded-lg text-center" /></div><div><label className="block text-xs font-bold text-gray-700 mb-1">體重 (kg)</label><input type="number" value={weight} onChange={(e) => setWeight(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded-lg text-center" /></div></div>
-                            <div><label className="block text-xs font-bold text-gray-700 mb-1">身高 (cm)</label><input type="number" value={height} onChange={(e) => setHeight(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded-lg text-center" /></div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">年齡 (歲)</label>
+                                    <input 
+                                        type="number" 
+                                        value={age} 
+                                        onChange={(e) => setAge(e.target.value)} 
+                                        onFocus={(e) => e.target.select()}
+                                        className="w-full p-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-yellow-400 outline-none transition-all" 
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">體重 (kg)</label>
+                                    <input 
+                                        type="number" 
+                                        value={weight} 
+                                        onChange={(e) => setWeight(e.target.value)} 
+                                        onFocus={(e) => e.target.select()}
+                                        className="w-full p-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-yellow-400 outline-none transition-all" 
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">身高 (cm)</label>
+                                <input 
+                                    type="number" 
+                                    value={height} 
+                                    onChange={(e) => setHeight(e.target.value)} 
+                                    onFocus={(e) => e.target.select()}
+                                    className="w-full p-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-yellow-400 outline-none transition-all" 
+                                />
+                            </div>
                             <div><label className="block text-xs font-bold text-gray-700 mb-1">每週運動量</label><div className="grid grid-cols-1 gap-1">{activityOptions.map((opt) => (<button key={opt.value} type="button" onClick={() => setActivityLevel(opt.value)} className={`py-2 px-3 rounded-lg border text-left flex justify-between items-center ${activityLevel === opt.value ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'bg-white border-gray-200 text-gray-600'}`}><span className="font-bold text-sm">{opt.label}</span><span className="text-xs opacity-70">{opt.desc}</span></button>))}</div></div>
                             <button type="submit" className="w-full bg-yellow-400 text-black font-bold py-3 rounded-xl hover:bg-yellow-300 transition-colors shadow-md mt-4">開始生成分析報告</button>
                         </form>
@@ -1151,39 +1145,58 @@
                 bad: getPartnerData(details.partners.bad),
             };
 
-            const handleExportPDF = async () => {
+            const handleExportPDF = async (e) => {
+                const btn = e.currentTarget;
+                const originalText = btn.innerText;
+                btn.innerText = "產出中...";
+                btn.disabled = true;
+
                 const element = document.getElementById('persona-report-content');
                 if (!element) return;
                 
-                // 檢查是否已載入工具
                 if (!window.html2canvas || !window.jspdf) {
                     alert("PDF 生成工具載入中，請稍後再試...");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
                     return;
                 }
 
                 try {
-                    const canvas = await window.html2canvas(element, { scale: 2, useCORS: true });
+                    const canvas = await window.html2canvas(element, { 
+                        scale: 4, 
+                        useCORS: true,
+                        windowHeight: element.scrollHeight + 100 
+                    });
+                    
                     const imgData = canvas.toDataURL('image/png');
-                    
                     const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF();
                     
-                    const imgProps = pdf.getImageProperties(imgData);
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    const imgWidth = canvas.width;
+                    const imgHeight = canvas.height;
+                    
+                    const pdfWidth = 210; 
+                    const pdfHeight = (imgHeight * pdfWidth) / imgWidth;
+                    
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: [pdfWidth, pdfHeight]
+                    });
                     
                     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                     pdf.save(`飲食人格報告_${persona.name}.pdf`);
                 } catch (err) {
                     console.error(err);
                     alert("產出 PDF 失敗，請檢查網路連線或稍後再試。");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
                 }
             };
 
             return (
                 <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 fade-in" onClick={onClose}>
                     <div className="bg-white rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto relative text-center no-scrollbar" onClick={e => e.stopPropagation()}>
-                        {/* 關閉按鈕 */}
                         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"><div className="w-6 h-6"><Icons.X /></div></button>
                         
                         {/* 這裡包一個 ID 給 html2canvas 截圖用 */}
@@ -1191,7 +1204,7 @@
                             <div className="pt-8 pb-4 bg-gradient-to-b from-gray-50 to-white">
                                 <div className="mb-4 flex justify-center">
                                     {persona.image && persona.image.length > 0 ? (
-                                        <img src={persona.image} alt={persona.name} className="w-32 h-32 object-contain drop-shadow-xl unlock-animation" />
+                                        <img src={persona.image} alt={persona.name} className="w-32 h-32 object-contain drop-shadow-xl" />
                                     ) : (
                                         <div className="text-6xl animate-bounce">{persona.emoji}</div>
                                     )}
@@ -1201,13 +1214,10 @@
                             </div>
 
                             <div className="p-6 space-y-6 text-left">
-                                
-                                {/* 一句話標語 */}
                                 <div className="text-center italic text-gray-600 font-serif text-lg leading-relaxed px-4">
                                     "{details.slogan}"
                                 </div>
 
-                                {/* 飲食行為特徵 */}
                                 <div>
                                     <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><span className="text-blue-500">🔍</span> 飲食行為特徵</h4>
                                     <ul className="list-disc list-outside ml-5 text-sm text-gray-600 space-y-1">
@@ -1215,7 +1225,6 @@
                                     </ul>
                                 </div>
 
-                                {/* 健康提醒 */}
                                 <div className="bg-red-50 p-4 rounded-xl border border-red-100">
                                     <h4 className="font-bold text-red-600 mb-2 flex items-center gap-2"><span className="text-xl">⚠️</span> 健康提醒</h4>
                                     <p className="text-xs text-red-800 mb-2 font-bold">{details.health.title}</p>
@@ -1224,7 +1233,6 @@
                                     </ul>
                                 </div>
 
-                                {/* 小步策略 */}
                                 <div>
                                     <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><span className="text-green-500">🌱</span> 小步策略</h4>
                                     <div className="space-y-2">
@@ -1237,7 +1245,6 @@
                                     </div>
                                 </div>
 
-                                {/* 升級方向 */}
                                 <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
                                     <h4 className="font-bold text-blue-800 mb-2 flex items-center gap-2"><span className="text-xl">🚀</span> 升級方向</h4>
                                     <ul className="space-y-1">
@@ -1250,7 +1257,6 @@
                                     </ul>
                                 </div>
 
-                                {/* 飯友配對 (圖片版) */}
                                 <div>
                                     <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><span className="text-purple-500">🤝</span> 飯友配對</h4>
                                     <div className="space-y-3">
