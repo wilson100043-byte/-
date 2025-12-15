@@ -986,7 +986,8 @@
                                     </div>
                                 </button>
                                 
-                                <div className={`grid grid-cols-2 gap-3 p-3 bg-gray-50 border-t border-gray-100 transition-all duration-300 ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 hidden'}`}>
+                                {/* 修改處：將 max-h-[1000px] 改為 max-h-[5000px] 以容納更多食物選項 */}
+                                <div className={`grid grid-cols-2 gap-3 p-3 bg-gray-50 border-t border-gray-100 transition-all duration-300 ${isOpen ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 hidden'}`}>
                                     {restFoods.map(food => (
                                         <FoodCard key={food.id} food={food} onClick={() => onAdd(food)} onInfo={() => {}} />
                                     ))}
