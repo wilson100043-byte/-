@@ -114,40 +114,81 @@
             Download: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
         };
 
-        // --- 1. 真實資料庫 ---
+        // --- 1. 真實資料庫 (已分類) ---
         const foodDatabase = [
-            { id: 'mcd_1', name: "大麥克", restaurant: "麥當勞", emoji: "🍔", calories: 496, p: 26, c: 43, f: 25, tags: ['fastfood'] },
-            { id: 'mcd_2', name: "勁辣雞腿堡", restaurant: "麥當勞", emoji: "🍔", calories: 461, p: 19, c: 42, f: 24, tags: ['fastfood'] },
-            { id: 'mcd_3', name: "麥克雞塊(6塊)", restaurant: "麥當勞", emoji: "🍗", calories: 316, p: 18, c: 12, f: 22, tags: ['fastfood', 'snack'] },
-            { id: 'mcd_4', name: "中薯", restaurant: "麥當勞", emoji: "🍟", calories: 313, p: 5, c: 36, f: 17, tags: ['fastfood', 'snack'] },
-            { id: 'mcd_5', name: "蘋果派", restaurant: "麥當勞", emoji: "🍎", calories: 228, p: 2, c: 25, f: 13, tags: ['fastfood', 'snack'] },
+            // 麥當勞 (一活)
+            { id: 'mcd_1', name: "大麥克", restaurant: "麥當勞", emoji: "🍔", calories: 496, p: 26, c: 43, f: 25, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_2', name: "勁辣雞腿堡", restaurant: "麥當勞", emoji: "🍔", calories: 493, p: 22, c: 47, f: 24, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_6', name: "雙層牛肉吉士堡", restaurant: "麥當勞", emoji: "🍔", calories: 475, p: 26, c: 35, f: 14.9, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_7', name: "嫩煎雞腿堡", restaurant: "麥當勞", emoji: "🍔", calories: 363, p: 24, c: 40, f: 12, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_8', name: "麥香魚", restaurant: "麥當勞", emoji: "🐟", calories: 330, p: 14, c: 36, f: 15, tags: ['fastfood', 'breakfast', 'lunch', 'dinner'] }, 
+            { id: 'mcd_9', name: "菌菇安格斯牛肉", restaurant: "麥當勞", emoji: "🍔", calories: 575, p: 30, c: 38, f: 34, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_10', name: "BLT安格斯牛肉", restaurant: "麥當勞", emoji: "🍔", calories: 544, p: 30, c: 40, f: 29, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_11', name: "BLT嫩煎雞腿堡", restaurant: "麥當勞", emoji: "🍔", calories: 455, p: 27, c: 42, f: 20, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_12', name: "麥脆雞", restaurant: "麥當勞", emoji: "🍗", calories: 507, p: 31, c: 19.7, f: 34, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_18', name: "四盎司牛肉堡", restaurant: "麥當勞", emoji: "🥩", calories: 541.3, p: 32, c: 40, f: 28, tags: ['fastfood', 'lunch', 'dinner'] },
+            { id: 'mcd_3', name: "麥克雞塊(6塊)", restaurant: "麥當勞", emoji: "🍗", calories: 266, p: 16, c: 13, f: 17, tags: ['fastfood', 'snack', 'lunch', 'dinner'] },
+            { id: 'mcd_4', name: "中薯", restaurant: "麥當勞", emoji: "🍟", calories: 313, p: 5, c: 36, f: 17, tags: ['fastfood', 'snack', 'lunch', 'dinner'] },
+            { id: 'mcd_5', name: "蘋果派", restaurant: "麥當勞", emoji: "🍎", calories: 216.8, p: 2, c: 32, f: 9.2, tags: ['fastfood', 'snack'] },
+            { id: 'mcd_19', name: "OREO冰炫風", restaurant: "麥當勞", emoji: "🍦", calories: 311.7, p: 5.2, c: 49, f: 11, tags: ['fastfood', 'snack'] },
+            { id: 'mcd_20', name: "小杯玉米湯", restaurant: "麥當勞", emoji: "🌽", calories: 93, p: 1.9, c: 17, f: 2.1, tags: ['fastfood', 'snack', 'breakfast'] },
+            { id: 'mcd_17', name: "藜麥烤雞沙拉", restaurant: "麥當勞", emoji: "🥗", calories: 264.2, p: 22, c: 16, f: 13, tags: ['fastfood', 'healthy', 'tutorial_correct', 'breakfast'] }, 
+            { id: 'mcd_13', name: "中杯可樂", restaurant: "麥當勞", emoji: "🥤", calories: 210.3, p: 0, c: 53, f: 0, tags: ['fastfood', 'drink'] },
+            { id: 'mcd_14', name: "中杯零卡可樂", restaurant: "麥當勞", emoji: "🥤", calories: 0, p: 0, c: 0, f: 0, tags: ['fastfood', 'drink', 'tutorial_correct'] },
+            { id: 'mcd_15', name: "中杯檸檬紅茶", restaurant: "麥當勞", emoji: "🥤", calories: 163.9, p: 0, c: 41, f: 0, tags: ['fastfood', 'drink'] },
+            { id: 'mcd_16', name: "中杯雪碧", restaurant: "麥當勞", emoji: "🥤", calories: 170.8, p: 0, c: 43, f: 0, tags: ['fastfood', 'drink'] },
             
-            { id: 'ly_1', name: "里洋波蘿麵包", restaurant: "里洋烘焙", emoji: "🍞", calories: 280, p: 7, c: 37, f: 11, tags: ['snack'] },
-            { id: 'ly_2', name: "紅豆麵包", restaurant: "里洋烘焙", emoji: "🥯", calories: 253, p: 7, c: 45, f: 5, tags: ['snack'] },
-            { id: 'ly_3', name: "奶酥麵包", restaurant: "里洋烘焙", emoji: "🥐", calories: 345, p: 9, c: 41, f: 16, tags: ['snack'] },
-            { id: 'ly_4', name: "奶油捲麵包", restaurant: "里洋烘焙", emoji: "🥖", calories: 322, p: 9, c: 49, f: 10, tags: ['snack'] },
-            { id: 'ly_5', name: "蜂蜜蛋糕", restaurant: "里洋烘焙", emoji: "🍰", calories: 242, p: 7, c: 42, f: 5, tags: ['snack'] },
+            // 7-11 (資料更新)
+            { id: 'sev_1', name: "特選麻醬涼麵", restaurant: "7-11", emoji: "🍜", calories: 626, p: 14.4, c: 80.2, f: 27.5, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_2', name: "日式蕎麥風味麵", restaurant: "7-11", emoji: "🍜", calories: 316, p: 12.1, c: 55.7, f: 5, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_3', name: "紐奧良風味雞堡", restaurant: "7-11", emoji: "🍔", calories: 357, p: 17.1, c: 31.6, f: 18, tags: ['convenience', 'breakfast', 'lunch'] }, 
+            { id: 'sev_4', name: "雙蔬鮪魚飯糰", restaurant: "7-11", emoji: "🍙", calories: 240, p: 5.2, c: 38.5, f: 7.2, tags: ['convenience', 'breakfast'] },
+            { id: 'sev_5', name: "御選肉鬆飯糰", restaurant: "7-11", emoji: "🍙", calories: 258, p: 5.5, c: 39.8, f: 8.5, tags: ['convenience', 'breakfast'] },
+            { id: 'sev_6', name: "龍蝦風味飯糰", restaurant: "7-11", emoji: "🍙", calories: 228, p: 4.7, c: 38.3, f: 6.2, tags: ['convenience', 'breakfast'] },
+            { id: 'sev_7', name: "滑蛋嫩雞親子丼", restaurant: "7-11", emoji: "🍛", calories: 613, p: 23.6, c: 99.2, f: 13.5, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_8', name: "佛蒙特咖哩雞", restaurant: "7-11", emoji: "🍛", calories: 781, p: 24.1, c: 120.6, f: 22.5, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_9', name: "香蒜奶油義麵", restaurant: "7-11", emoji: "🍝", calories: 646, p: 22.4, c: 89.6, f: 22, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_10', name: "起司火腿蛋三明治", restaurant: "7-11", emoji: "🥪", calories: 230, p: 6.1, c: 25.5, f: 11.5, tags: ['convenience', 'breakfast'] },
+            { id: 'sev_11', name: "及第豬肉水餃", restaurant: "7-11", emoji: "🥟", calories: 430, p: 14.8, c: 38.6, f: 24.1, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_12', name: "起司四重奏熱狗", restaurant: "7-11", emoji: "🌭", calories: 452, p: 17.5, c: 33.6, f: 27.5, tags: ['convenience', 'breakfast', 'lunch'] }, 
+            { id: 'sev_13', name: "三起司肉醬焗飯", restaurant: "7-11", emoji: "🥘", calories: 685, p: 19.2, c: 114.5, f: 16.7, tags: ['convenience', 'lunch', 'dinner'] },
+            { id: 'sev_14', name: "質立希臘式優格", restaurant: "7-11", emoji: "🥣", calories: 185, p: 6.0, c: 23.6, f: 7.4, tags: ['convenience', 'snack', 'healthy', 'breakfast'] }, 
+            { id: 'sev_15', name: "主廚烤雞時蔬餐", restaurant: "7-11", emoji: "🍱", calories: 432, p: 25.5, c: 45.1, f: 16.6, tags: ['convenience', 'healthy', 'lunch', 'dinner'] },
+            { id: 'sev_16', name: "增雞蛋白餐", restaurant: "7-11", emoji: "🍱", calories: 595, p: 31.1, c: 72.4, f: 20.1, tags: ['convenience', 'healthy', 'tutorial_correct', 'lunch', 'dinner'] },
+            { id: 'sev_17', name: "府城鹽水風味意麵", restaurant: "7-11", emoji: "🍜", calories: 552, p: 22.9, c: 73.9, f: 18.3, tags: ['convenience', 'lunch', 'dinner'] },
+            // 7-11 雞胸肉
+            { id: '9', name: "7-11 雞胸肉", restaurant: "7-11", emoji: "💪", calories: 130, p: 24, c: 2, f: 2, tags: ['convenience', 'tutorial_correct', 'healthy', 'breakfast'] },
 
-            { id: 'shishi_1', name: "雞排咖哩飯", restaurant: "食事場", emoji: "🍛", calories: 751, p: 24, c: 103, f: 27, tags: ['restaurant'] },
-            { id: 'shishi_2', name: "火腿蛋炒飯", restaurant: "食事場", emoji: "🍚", calories: 663, p: 15, c: 99, f: 23, tags: ['restaurant'] },
-            { id: 'shishi_3', name: "豬排蛋炒飯", restaurant: "食事場", emoji: "🥩", calories: 742, p: 26, c: 101, f: 26, tags: ['restaurant'] },
-            { id: 'shishi_4', name: "酥炸雞腿飯", restaurant: "食事場", emoji: "🍗", calories: 800, p: 35, c: 75, f: 40, tags: ['restaurant', 'night_market'] },
-            { id: 'shishi_5', name: "客家小炒", restaurant: "食事場", emoji: "🥡", calories: 626, p: 28, c: 70, f: 26, tags: ['restaurant'] },
-            { id: 'shishi_6', name: "蔥爆豬肉飯", restaurant: "食事場", emoji: "🍱", calories: 650, p: 24, c: 71, f: 30, tags: ['restaurant'] },
-            { id: 'shishi_7', name: "糖醋雞丁飯", restaurant: "食事場", emoji: "🍗", calories: 706, p: 32, c: 86, f: 26, tags: ['restaurant'] },
-            { id: 'shishi_8', name: "昆布豬肉鍋", restaurant: "食事場", emoji: "🍲", calories: 439, p: 33, c: 43, f: 15, tags: ['restaurant'] },
+            // 里洋烘焙 (一活)
+            { id: 'ly_1', name: "里洋波蘿麵包", restaurant: "里洋烘焙", emoji: "🍞", calories: 280, p: 7, c: 37, f: 11, tags: ['snack', 'breakfast'] },
+            { id: 'ly_2', name: "紅豆麵包", restaurant: "里洋烘焙", emoji: "🥯", calories: 253, p: 7, c: 45, f: 5, tags: ['snack', 'breakfast'] },
+            { id: 'ly_3', name: "奶酥麵包", restaurant: "里洋烘焙", emoji: "🥐", calories: 345, p: 9, c: 41, f: 16, tags: ['snack', 'breakfast'] },
+            { id: 'ly_4', name: "奶油捲麵包", restaurant: "里洋烘焙", emoji: "🥖", calories: 322, p: 9, c: 49, f: 10, tags: ['snack', 'breakfast'] },
+            { id: 'ly_5', name: "蜂蜜蛋糕", restaurant: "里洋烘焙", emoji: "🍰", calories: 242, p: 7, c: 42, f: 5, tags: ['snack', 'breakfast'] },
 
-            { id: 'pb_1', name: "打拋豬飯", restaurant: "蛋白盒子", emoji: "🍱", calories: 440, p: 13, c: 61, f: 16, tags: ['healthy'] },
-            { id: 'pb_2', name: "雞胸飯", restaurant: "蛋白盒子", emoji: "🥗", calories: 439, p: 33, c: 61, f: 7, tags: ['healthy', 'tutorial_correct'] },
-            { id: 'pb_3', name: "雞腿排飯", restaurant: "蛋白盒子", emoji: "🍗", calories: 475, p: 24, c: 61, f: 15, tags: ['healthy'] },
-            { id: 'pb_4', name: "素排骨餐盒", restaurant: "蛋白盒子", emoji: "🥬", calories: 500, p: 19, c: 61, f: 20, tags: ['healthy'] },
-            { id: 'pb_5', name: "青蔥海鹽雞胸", restaurant: "蛋白盒子", emoji: "🥗", calories: 460, p: 36, c: 61, f: 8, tags: ['healthy'] },
-            { id: 'pb_6', name: "韓式辣醬豬", restaurant: "蛋白盒子", emoji: "🍱", calories: 561, p: 20, c: 64, f: 25, tags: ['healthy'] },
-            { id: 'pb_7', name: "青花椒雞腿排", restaurant: "蛋白盒子", emoji: "🍗", calories: 483, p: 26, c: 61, f: 15, tags: ['healthy'] },
-            { id: 'pb_8', name: "壽喜牛五花", restaurant: "蛋白盒子", emoji: "🥩", calories: 594, p: 18, c: 63, f: 30, tags: ['healthy'] },
-            { id: 'pb_9', name: "漢堡排餐盒", restaurant: "蛋白盒子", emoji: "🍔", calories: 439, p: 24, c: 61, f: 11, tags: ['healthy'] },
-            { id: 'pb_10', name: "味噌烤鱸魚", restaurant: "蛋白盒子", emoji: "🐟", calories: 421, p: 32, c: 62, f: 5, tags: ['healthy'] },
+            // 食事場 (一活)
+            { id: 'shishi_1', name: "雞排咖哩飯", restaurant: "食事場", emoji: "🍛", calories: 751, p: 24, c: 103, f: 27, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_2', name: "火腿蛋炒飯", restaurant: "食事場", emoji: "🍚", calories: 663, p: 15, c: 99, f: 23, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_3', name: "豬排蛋炒飯", restaurant: "食事場", emoji: "🥩", calories: 742, p: 26, c: 101, f: 26, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_4', name: "酥炸雞腿飯", restaurant: "食事場", emoji: "🍗", calories: 800, p: 35, c: 75, f: 40, tags: ['restaurant', 'night_market', 'lunch', 'dinner'] },
+            { id: 'shishi_5', name: "客家小炒", restaurant: "食事場", emoji: "🥡", calories: 626, p: 28, c: 70, f: 26, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_6', name: "蔥爆豬肉飯", restaurant: "食事場", emoji: "🍱", calories: 650, p: 24, c: 71, f: 30, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_7', name: "糖醋雞丁飯", restaurant: "食事場", emoji: "🍗", calories: 706, p: 32, c: 86, f: 26, tags: ['restaurant', 'lunch', 'dinner'] },
+            { id: 'shishi_8', name: "昆布豬肉鍋", restaurant: "食事場", emoji: "🍲", calories: 439, p: 33, c: 43, f: 15, tags: ['restaurant', 'lunch', 'dinner'] },
 
+            // 蛋白盒子 (一活)
+            { id: 'pb_1', name: "打拋豬飯", restaurant: "蛋白盒子", emoji: "🍱", calories: 440, p: 13, c: 61, f: 16, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_2', name: "雞胸飯", restaurant: "蛋白盒子", emoji: "🥗", calories: 439, p: 33, c: 61, f: 7, tags: ['healthy', 'tutorial_correct', 'lunch', 'dinner'] },
+            { id: 'pb_3', name: "雞腿排飯", restaurant: "蛋白盒子", emoji: "🍗", calories: 475, p: 24, c: 61, f: 15, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_4', name: "素排骨餐盒", restaurant: "蛋白盒子", emoji: "🥬", calories: 500, p: 19, c: 61, f: 20, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_5', name: "青蔥海鹽雞胸", restaurant: "蛋白盒子", emoji: "🥗", calories: 460, p: 36, c: 61, f: 8, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_6', name: "韓式辣醬豬", restaurant: "蛋白盒子", emoji: "🍱", calories: 561, p: 20, c: 64, f: 25, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_7', name: "青花椒雞腿排", restaurant: "蛋白盒子", emoji: "🍗", calories: 483, p: 26, c: 61, f: 15, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_8', name: "壽喜牛五花", restaurant: "蛋白盒子", emoji: "🥩", calories: 594, p: 18, c: 63, f: 30, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_9', name: "漢堡排餐盒", restaurant: "蛋白盒子", emoji: "🍔", calories: 439, p: 24, c: 61, f: 11, tags: ['healthy', 'lunch', 'dinner'] },
+            { id: 'pb_10', name: "味噌烤鱸魚", restaurant: "蛋白盒子", emoji: "🐟", calories: 421, p: 32, c: 62, f: 5, tags: ['healthy', 'lunch', 'dinner'] },
+
+            // 糧晨 GET食 (一活)
             { id: 'lc_1', name: "培根蛋餅", restaurant: "糧晨GET食", emoji: "🌯", calories: 357, p: 15, c: 36, f: 17, tags: ['breakfast'] },
             { id: 'lc_2', name: "鮪魚蛋吐司", restaurant: "糧晨GET食", emoji: "🥪", calories: 442, p: 15, c: 37, f: 26, tags: ['breakfast'] },
             { id: 'lc_3', name: "草莓吐司", restaurant: "糧晨GET食", emoji: "🍞", calories: 149, p: 2, c: 33, f: 1, tags: ['breakfast', 'snack'] },
@@ -159,60 +200,70 @@
             { id: 'lc_9', name: "火腿玉米熱壓", restaurant: "糧晨GET食", emoji: "🥪", calories: 389, p: 10, c: 40, f: 21, tags: ['breakfast'] },
             { id: 'lc_10', name: "蘿蔔糕", restaurant: "糧晨GET食", emoji: "🥕", calories: 306, p: 2, c: 44, f: 14, tags: ['breakfast', 'snack'] },
 
+            // 四海遊龍 (一活) - 設定為一份8顆
             { id: 'sh_1', name: "招牌鍋貼(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 480, p: 16, c: 50, f: 24, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_2', name: "韭菜鍋貼(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 440, p: 18, c: 48, f: 20, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_3', name: "玉米水餃(8顆)", restaurant: "四海遊龍", emoji: "🥟", calories: 360, p: 16, c: 48, f: 12, tags: ['lunch', 'dinner'] }, 
             { id: 'sh_4', name: "牛汁乾麵", restaurant: "四海遊龍", emoji: "🍜", calories: 591, p: 22, c: 115, f: 5, tags: ['lunch', 'dinner'] },
             { id: 'sh_5', name: "肉燥拌麵", restaurant: "四海遊龍", emoji: "🍜", calories: 563, p: 20, c: 93, f: 12, tags: ['lunch', 'dinner'] },
 
+            // 水雲朵 (一活)
             { id: 'wd_1', name: "黑糖珍珠奶茶", restaurant: "水雲朵", emoji: "🧋", calories: 903, p: 1, c: 190, f: 8, tags: ['drink', 'snack'] },
             { id: 'wd_2', name: "伯爵鮮奶茶", restaurant: "水雲朵", emoji: "🥤", calories: 246, p: 10, c: 29, f: 10, tags: ['drink'] },
             { id: 'wd_3', name: "甘蔗青茶", restaurant: "水雲朵", emoji: "🍵", calories: 344, p: 0, c: 86, f: 0, tags: ['drink'] },
             { id: 'wd_4', name: "木瓜牛奶", restaurant: "水雲朵", emoji: "🥛", calories: 567, p: 14, c: 95, f: 14, tags: ['drink'] },
             { id: 'wd_5', name: "冬瓜茶", restaurant: "水雲朵", emoji: "🍹", calories: 301, p: 0, c: 75, f: 0, tags: ['drink'] },
 
+            // 品軒樓 (禮賢樓)
             { id: 'ph_1', name: "貴妃雞腿飯", restaurant: "品軒樓", emoji: "🍗", calories: 766, p: 38, c: 86, f: 30, tags: ['lunch', 'dinner'] },
             { id: 'ph_2', name: "酥炸豬排飯", restaurant: "品軒樓", emoji: "🥩", calories: 881, p: 42, c: 86, f: 41, tags: ['lunch', 'dinner'] },
             { id: 'ph_3', name: "蔥爆豬肉飯", restaurant: "品軒樓", emoji: "🍱", calories: 819, p: 38, c: 88, f: 35, tags: ['lunch', 'dinner'] },
             { id: 'ph_4', name: "宮保雞丁飯", restaurant: "品軒樓", emoji: "🍛", calories: 811, p: 37, c: 87, f: 35, tags: ['lunch', 'dinner'] },
             { id: 'ph_5', name: "蒲燒鯛魚飯", restaurant: "品軒樓", emoji: "🐟", calories: 729, p: 29, c: 88, f: 29, tags: ['lunch', 'dinner'] },
 
+            // 重慶抄手 (禮賢樓)
             { id: 'cc_1', name: "鮮菇雞湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 510, p: 18, c: 76, f: 15, tags: ['lunch', 'dinner'] },
             { id: 'cc_2', name: "雪菜肉絲湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 540, p: 24, c: 75, f: 16, tags: ['lunch', 'dinner'] },
             { id: 'cc_3', name: "原湯抄手湯麵", restaurant: "重慶抄手", emoji: "🍜", calories: 592, p: 25, c: 78, f: 20, tags: ['lunch', 'dinner'] },
             { id: 'cc_4', name: "香菇炸醬乾麵", restaurant: "重慶抄手", emoji: "🍝", calories: 576, p: 22, c: 77, f: 20, tags: ['lunch', 'dinner'] },
             { id: 'cc_5', name: "雙菇素乾麵", restaurant: "重慶抄手", emoji: "🍝", calories: 508, p: 16, c: 75, f: 16, tags: ['lunch', 'dinner'] },
 
-            { id: 'louisa_1', name: "莊園級拿鐵", restaurant: "路易莎", emoji: "☕", calories: 296, p: 8, c: 48, f: 8, tags: ['drink'] },
-            { id: 'louisa_2', name: "英式奶茶", restaurant: "路易莎", emoji: "🧋", calories: 280, p: 8, c: 44, f: 8, tags: ['drink'] },
+            // 路易莎 (禮賢樓)
+            { id: 'louisa_1', name: "莊園級拿鐵", restaurant: "路易莎", emoji: "☕", calories: 296, p: 8, c: 48, f: 8, tags: ['drink', 'breakfast'] }, // 補上早餐
+            { id: 'louisa_2', name: "英式奶茶", restaurant: "路易莎", emoji: "🧋", calories: 280, p: 8, c: 44, f: 8, tags: ['drink', 'breakfast'] }, // 補上早餐
             { id: 'louisa_3', name: "經典水果茶", restaurant: "路易莎", emoji: "🍹", calories: 300, p: 0, c: 75, f: 0, tags: ['drink'] },
             { id: 'louisa_4', name: "豬肉起司瑪芬", restaurant: "路易莎", emoji: "🍔", calories: 448, p: 17, c: 32, f: 28, tags: ['breakfast', 'snack'] },
             { id: 'louisa_5', name: "燻雞三明治", restaurant: "路易莎", emoji: "🥪", calories: 419, p: 15, c: 56, f: 15, tags: ['breakfast', 'snack'] },
 
+            // 龐德羅莎 (二活)
             { id: 'pond_1', name: "菲力牛排6oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 386, p: 36, c: 8, f: 23, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_2', name: "沙朗牛排6.5oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 378, p: 38, c: 10, f: 20, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_3', name: "牛小排8oz", restaurant: "龐德羅莎", emoji: "🥩", calories: 592, p: 25, c: 8, f: 51, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_4', name: "炭烤雞腿排7oz", restaurant: "龐德羅莎", emoji: "🍗", calories: 352, p: 35, c: 8, f: 20, tags: ['lunch', 'dinner', 'steak'] },
             { id: 'pond_5', name: "美式烤豬肋排", restaurant: "龐德羅莎", emoji: "🍖", calories: 581, p: 33, c: 8, f: 46, tags: ['lunch', 'dinner', 'steak'] },
 
+            // 小蔬杭 (二活)
             { id: 'xsh_1', name: "塔香杏菇", restaurant: "小蔬杭", emoji: "🍄", calories: 69, p: 1, c: 5, f: 5, tags: ['side', 'vegetarian'] },
             { id: 'xsh_2', name: "厚煎蘿蔔糕", restaurant: "小蔬杭", emoji: "🥕", calories: 226, p: 4, c: 30, f: 10, tags: ['side', 'vegetarian'] },
             { id: 'xsh_3', name: "老皮嫩肉", restaurant: "小蔬杭", emoji: "🧊", calories: 130, p: 7, c: 4, f: 10, tags: ['side', 'vegetarian'] },
             { id: 'xsh_4', name: "臭味相投", restaurant: "小蔬杭", emoji: "🍲", calories: 200, p: 14, c: 0, f: 16, tags: ['side', 'vegetarian'] },
             { id: 'xsh_5', name: "炒年糕", restaurant: "小蔬杭", emoji: "🥘", calories: 277, p: 7, c: 51, f: 5, tags: ['side', 'vegetarian'] },
 
-            { id: 'sub_1', name: "嫩切雞肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 300, p: 20, c: 41, f: 6, tags: ['healthy', 'fastfood'] },
-            { id: 'sub_2', name: "火腿潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 317, p: 19, c: 44, f: 7, tags: ['healthy', 'fastfood'] },
-            { id: 'sub_3', name: "燒烤牛肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 346, p: 21, c: 40, f: 7, tags: ['healthy', 'fastfood'] },
-            { id: 'sub_4', name: "鮪魚潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 507, p: 22, c: 39, f: 29, tags: ['healthy', 'fastfood'] },
-            { id: 'sub_5', name: "蛋沙拉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 421, p: 17, c: 41, f: 21, tags: ['healthy', 'fastfood'] },
+            // SUBWAY (二活)
+            { id: 'sub_1', name: "嫩切雞肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 300, p: 20, c: 41, f: 6, tags: ['healthy', 'fastfood', 'lunch', 'dinner'] },
+            { id: 'sub_2', name: "火腿潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 317, p: 19, c: 44, f: 7, tags: ['healthy', 'fastfood', 'lunch', 'dinner'] },
+            { id: 'sub_3', name: "燒烤牛肉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 346, p: 21, c: 40, f: 7, tags: ['healthy', 'fastfood', 'lunch', 'dinner'] },
+            { id: 'sub_4', name: "鮪魚潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 507, p: 22, c: 39, f: 29, tags: ['healthy', 'fastfood', 'lunch', 'dinner'] },
+            { id: 'sub_5', name: "蛋沙拉潛艇堡", restaurant: "SUBWAY", emoji: "🥪", calories: 421, p: 17, c: 41, f: 21, tags: ['healthy', 'fastfood', 'lunch', 'dinner'] },
 
+            // 曉鹿鳴樓 (二活)
             { id: 'xl_1', name: "銷魂東坡肉", restaurant: "曉鹿鳴樓", emoji: "🥩", calories: 461, p: 10, c: 4, f: 45, tags: ['lunch', 'dinner'] },
             { id: 'xl_2', name: "蔥爆牛肉絲", restaurant: "曉鹿鳴樓", emoji: "🥩", calories: 194, p: 18, c: 8, f: 10, tags: ['lunch', 'dinner'] },
             { id: 'xl_3', name: "左宗棠雞", restaurant: "曉鹿鳴樓", emoji: "🍗", calories: 118, p: 13, c: 3, f: 6, tags: ['lunch', 'dinner'] },
             { id: 'xl_4', name: "紅燒黃魚", restaurant: "曉鹿鳴樓", emoji: "🐟", calories: 114, p: 12, c: 3, f: 6, tags: ['lunch', 'dinner'] },
             { id: 'xl_5', name: "蝦醬空心菜", restaurant: "曉鹿鳴樓", emoji: "🥬", calories: 100, p: 5, c: 11, f: 4, tags: ['lunch', 'dinner'] },
 
+            // 曉鹿盒食 (二活 - 便當)
             { id: 'xlbox_1', name: "東坡肉便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 785, p: 45, c: 87, f: 48, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_2', name: "軟骨排便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 728, p: 47, c: 86, f: 41, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_3', name: "左宗棠雞便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 736, p: 35, c: 123, f: 31, tags: ['lunch', 'dinner'] },
@@ -220,12 +271,14 @@
             { id: 'xlbox_5', name: "白帶魚便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 790, p: 37, c: 91, f: 44, tags: ['lunch', 'dinner'] },
             { id: 'xlbox_6', name: "九宮格御便當", restaurant: "曉鹿盒食", emoji: "🍱", calories: 764, p: 43, c: 87, f: 47, tags: ['lunch', 'dinner'] },
 
+            // 莫凡彼 (二活)
             { id: 'mv_1', name: "鴨胸義大利麵", restaurant: "莫凡彼", emoji: "🍝", calories: 650, p: 28, c: 76, f: 26, tags: ['lunch', 'dinner'] },
             { id: 'mv_2', name: "海鮮燉飯", restaurant: "莫凡彼", emoji: "🥘", calories: 676, p: 28, c: 78, f: 28, tags: ['lunch', 'dinner'] },
             { id: 'mv_3', name: "牛排青醬烤飯", restaurant: "莫凡彼", emoji: "🥩", calories: 768, p: 36, c: 84, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'mv_4', name: "海陸總匯披薩", restaurant: "莫凡彼", emoji: "🍕", calories: 732, p: 31, c: 80, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'mv_5', name: "焗烤蔬菜千層麵", restaurant: "莫凡彼", emoji: "🍝", calories: 653, p: 22, c: 76, f: 29, tags: ['lunch', 'dinner'] },
 
+            // 小木屋鬆餅 (新口味補充)
             { id: 'cabin_1', name: "藍莓鬆餅", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 379, p: 9, c: 66, f: 12, tags: ['snack'] },
             { id: 'cabin_2', name: "巧克力香蕉", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 587, p: 11, c: 84, f: 23, tags: ['snack'] },
             { id: 'cabin_3', name: "抹茶紅豆", restaurant: "小木屋鬆餅", emoji: "🧇", calories: 667, p: 14, c: 99, f: 24, tags: ['snack'] },
@@ -234,24 +287,28 @@
             { id: 'cabin_6', name: "黑咖喱牛堡", restaurant: "小木屋鬆餅", emoji: "🍔", calories: 614, p: 19, c: 81, f: 24, tags: ['lunch', 'snack'] },
             { id: 'cabin_7', name: "海派蝦堡(單)", restaurant: "小木屋鬆餅", emoji: "🍤", calories: 154, p: 11, c: 11, f: 7, tags: ['snack'] },
 
+            // 椰林燒臘 (新增)
             { id: 'yl_1', name: "蔥油雞飯", restaurant: "椰林燒臘", emoji: "🍗", calories: 672, p: 30, c: 75, f: 28, tags: ['lunch', 'dinner'] },
             { id: 'yl_2', name: "叉燒飯", restaurant: "椰林燒臘", emoji: "🥩", calories: 681, p: 28, c: 77, f: 29, tags: ['lunch', 'dinner'] },
             { id: 'yl_3', name: "燒鴨飯", restaurant: "椰林燒臘", emoji: "🍗", calories: 689, p: 31, c: 76, f: 29, tags: ['lunch', 'dinner'] },
             { id: 'yl_4', name: "脆皮燒肉飯", restaurant: "椰林燒臘", emoji: "🥩", calories: 754, p: 32, c: 80, f: 34, tags: ['lunch', 'dinner'] },
             { id: 'yl_5', name: "三寶飯", restaurant: "椰林燒臘", emoji: "🍱", calories: 658, p: 28, c: 78, f: 26, tags: ['lunch', 'dinner'] },
 
+            // 比司多 (新增)
             { id: 'bs_1', name: "香雞排漢堡蛋", restaurant: "比司多", emoji: "🍔", calories: 554, p: 22, c: 58, f: 26, tags: ['breakfast', 'lunch'] },
             { id: 'bs_2', name: "烤火腿蛋吐司", restaurant: "比司多", emoji: "🥪", calories: 421, p: 16, c: 40, f: 21, tags: ['breakfast'] },
             { id: 'bs_3', name: "烤鮪魚蛋吐司", restaurant: "比司多", emoji: "🥪", calories: 392, p: 12, c: 41, f: 20, tags: ['breakfast'] },
             { id: 'bs_4', name: "玉米蛋餅", restaurant: "比司多", emoji: "🌯", calories: 352, p: 10, c: 42, f: 16, tags: ['breakfast'] },
             { id: 'bs_5', name: "蘿蔔糕", restaurant: "比司多", emoji: "🥕", calories: 374, p: 14, c: 48, f: 14, tags: ['breakfast', 'snack'] },
 
+            // 壹番屋 (新增)
             { id: 'ich_1', name: "炸雞塊咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 890, p: 42, c: 86, f: 42, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_2', name: "炸豬排咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 925, p: 44, c: 86, f: 45, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_3', name: "漢堡咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 866, p: 44, c: 87, f: 38, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_4', name: "麻婆咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 741, p: 33, c: 78, f: 33, tags: ['lunch', 'dinner', 'restaurant'] },
             { id: 'ich_5', name: "蔬菜咖哩飯", restaurant: "壹番屋", emoji: "🍛", calories: 684, p: 28, c: 80, f: 28, tags: ['lunch', 'dinner', 'restaurant'] },
 
+            // 夏威夷爭鮮飯 (新增)
             { id: 'hw_1', name: "壽喜燒牛肉飯", restaurant: "夏威夷", emoji: "🐮", calories: 750, p: 33, c: 84, f: 32, tags: ['lunch', 'dinner'] },
             { id: 'hw_2', name: "生鮭魚飯", restaurant: "夏威夷", emoji: "🐟", calories: 602, p: 27, c: 82, f: 18, tags: ['lunch', 'dinner', 'healthy'] },
             { id: 'hw_3', name: "蒜味鮮白蝦飯", restaurant: "夏威夷", emoji: "🦐", calories: 579, p: 27, c: 82, f: 16, tags: ['lunch', 'dinner', 'healthy'] },
@@ -259,7 +316,7 @@
             { id: 'hw_5', name: "椒麻糖心蛋飯", restaurant: "夏威夷", emoji: "🥚", calories: 580, p: 25, c: 82, f: 17, tags: ['lunch', 'dinner'] },
         ];
 
-        // --- 2. 飲食人格 ---
+        // --- 2. 飲食人格 (更新詳細報告內容) ---
         const personaDatabase = [
             { 
                 id: 'faster', 
@@ -655,7 +712,7 @@
             const fRatio = (totalF * 9) / (calories || 1);
             if (fRatio > 0.4) {
                 const culprit = foods.reduce((prev, current) => (prev.f > current.f) ? prev : current, foods[0]);
-                if (culprit) insights.push({ type: 'bad', icon: '🛢️', title: '油膩兇手', msg: `油脂偏高！罪魁禍首是「${culprit.name}」，它貢獻了 ${Math.round(culprit.f)}g 脂肪！`});
+                if (culprit) insights.push({ type: 'bad', icon: '🛢️', title: '油膩兇手', msg: `油脂超標！罪魁禍首是「${culprit.name}」，它貢獻了 ${Math.round(culprit.f)}g 脂肪！`});
             }
 
             const cRatio = (totalC * 4) / (calories || 1);
@@ -664,11 +721,11 @@
                 if (culprit) insights.push({ type: 'bad', icon: '🍚', title: '澱粉炸彈', msg: `「${culprit.name}」是最大的醣分來源，小心血糖飆升想睡覺！`});
             }
 
-            if (calories > tdee + 300) {
-                 const runMin = Math.round((calories - tdee) / 10);
-                 insights.push({ type: 'warn', icon: '🔥', title: '熱量囤積警報', msg: `多吃了 ${calories - tdee} 大卡，這相當於要慢跑 ${runMin} 分鐘才能消耗掉！`});
-            } else if (calories < tdee * 0.7) {
-                 insights.push({ type: 'warn', icon: '📉', title: '能量不足', msg: `熱量赤字過大，大腦運作效率可能會降低，小心變笨喔。`});
+            // 3. 選 MVP (Protein)
+            const pRatio = (totalP * 4) / (calories || 1);
+            if (pRatio > 0.2) {
+                const mvp = foods.reduce((prev, current) => (prev.p > current.p) ? prev : current, foods[0]);
+                if (mvp) insights.push({ type: 'good', icon: '🏆', title: '增肌 MVP', msg: `「${mvp.name}」是你補充蛋白質的最佳隊友！`});
             }
 
             if (insights.length === 0) {
@@ -915,7 +972,7 @@
                                     </div>
                                 </button>
                                 
-                                <div className={`grid grid-cols-2 gap-3 p-3 bg-gray-50 border-t border-gray-100 transition-all duration-300 ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 hidden'}`}>
+                                <div className={`grid grid-cols-2 gap-3 p-3 bg-gray-50 border-t border-gray-100 transition-all duration-300 ${isOpen ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0 hidden'}`}>
                                     {restFoods.map(food => (
                                         <FoodCard key={food.id} food={food} onClick={() => onAdd(food)} onInfo={() => {}} />
                                     ))}
@@ -1828,7 +1885,7 @@
                             {/* --- 新增按鈕：查看詳細人格報告 --- */}
                             <button 
                                 onClick={() => setSelectedPersona(persona)}
-                                className="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold shadow-lg hover:bg-yellow-400 transition-transform hover:scale-[1.02] flex items-center justify-center gap-2"
+                                className="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold shadow-lg hover:bg-yellow-400 transition-transform hover:scale-[1.02] flex items-center justify-center gap-2 mb-6"
                             >
                                 <span>📜 查看詳細人格報告</span>
                                 <Icons.ArrowRight />
