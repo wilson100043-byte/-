@@ -335,7 +335,7 @@
                 id: 'faster', 
                 name: '絕食系修仙者', 
                 emoji: '🧘', 
-                image: '', 
+                image: './achievement_faster.png', 
                 desc: '吃這麼少，你是準備得道成仙了嗎？', 
                 color: 'bg-gray-100 text-gray-800',
                 details: {
@@ -358,7 +358,7 @@
                 id: 'oil_king', 
                 name: '公館油王', 
                 emoji: '🛢️', 
-                image: '', 
+                image: './achievement_oil_king.png', 
                 desc: '你的血管裡流的不是血，是香濃的雞油與滷肉汁。', 
                 color: 'bg-yellow-100 text-yellow-800',
                 details: {
@@ -381,7 +381,7 @@
                 id: 'carb_cultist', 
                 name: '澱粉教徒', 
                 emoji: '🍚', 
-                image: '', 
+                image: './achievement_carb_cultist.png', 
                 desc: '飯、麵、麵包...沒有澱粉的一餐對你來說只是點心。', 
                 color: 'bg-orange-100 text-orange-800',
                 details: {
@@ -404,7 +404,7 @@
                 id: 'protein_hunter', 
                 name: '蛋白質獵人', 
                 emoji: '💪', 
-                image: '', 
+                image: './achievement_protein_hunter.png', 
                 desc: '你的眼裡只有雞胸肉，連喝水都想加蛋白粉。', 
                 color: 'bg-red-100 text-red-800',
                 details: {
@@ -427,7 +427,7 @@
                 id: 'nutritionist', 
                 name: '營養精算師', 
                 emoji: '🥗', 
-                image: '', 
+                image: './achievement_nutritionist.png', 
                 desc: '三大營養素比例完美，你是 AI 吧？', 
                 color: 'bg-green-100 text-green-800',
                 details: {
@@ -450,7 +450,7 @@
                 id: 'happy_chubby', 
                 name: '隨性美食家', 
                 emoji: '😈', 
-                image: '', 
+                image: './achievement_happy_chubby.png', 
                 desc: '飲食隨心所欲，雖然稍微超出健康標準，但吃得開心最重要！', 
                 color: 'bg-purple-100 text-purple-800',
                 details: {
@@ -1537,7 +1537,7 @@
                     setEatenFoods(newMeals);
                     setDailyStats(calculateDailyStatsFromMeals(newMeals));
                     setStoryMealIndex(storyMealIndex - 1);
-                    setStoryModalOpen(false); 
+                    setStoryModalOpen(true); // Re-open the story modal to show context
                 }
             };
 
