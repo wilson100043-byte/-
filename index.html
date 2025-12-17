@@ -342,14 +342,13 @@
                     slogan: "今天又是靠靈氣運作的一天。",
                     traits: ["常常因忙碌、沒胃口或懶得吃，而讓熱量攝取嚴重不足。", "一天可能只吃一餐或靠零食撐過去。", "對「吃」的感受模糊，有時會不小心吃太少。"],
                     health: {
-                        title: "修行歸修行，但身體需要能量運作呀。",
+                        title: "修行歸修行，但身體需要能量運作呀。低熱量太久，容易：",
                         items: ["專注力下降", "手腳冰冷、精神不濟", "情緒起伏較大"]
                     },
                     strategy: ["早餐先吃點「能量小物」：香蕉、吐司、優格都很好。", "用「一拳頭規則」：每餐至少補充一拳頭大小的主食。", "正餐至少吃兩樣：主食 + 蛋白質，其他要吃就加分！"],
                     upgrade: ["嘗試固定三餐中的至少兩餐", "善用便利商店組合：飯糰＋豆漿、麵包＋茶葉蛋", "將飲食視為補充體力而不是負擔"],
                     partners: {
                         best: "蛋白質獵人｜他會拉你一起吃足量。",
-                        complementary: "澱粉教徒｜他會提醒你「要補點東西」。",
                         bad: "公館油王｜油太重會讓你更難開胃。"
                     }
                 }
@@ -365,14 +364,13 @@
                     slogan: "你的血管裡流的不是血，是香濃的雞油與滷肉汁。",
                     traits: ["喜歡濃郁、油香、炸物類食物。", "飲食中常出現隱形脂肪（奶精、滷汁、酥皮）。", "吃完容易覺得累、想睡。"],
                     health: {
-                        title: "你的胃不是油鍋，身體其實喜歡「剛剛好」的油。",
+                        title: "你的胃不是油鍋，身體其實喜歡「剛剛好」的油。過多油脂可能造成：",
                         items: ["下午昏昏欲睡", "胃口反而變差", "長期負擔過大"]
                     },
                     strategy: ["今天的炸物換一次烤物。", "奶茶改無糖＋去奶精。", "滷味選水煮、青菜多加一份。"],
                     upgrade: ["少一點重油、多一點主菜", "提升蔬菜量讓油脂更好被消化", "偶爾挑選原型食物當主角"],
                     partners: {
                         best: "營養精算師｜會幫你默默平衡整套餐。",
-                        complementary: "隨性美食家｜吃起來最爽，但兩人都太放飛。",
                         bad: "澱粉教徒｜油＋澱粉＝太快樂但後果太重。"
                     }
                 }
@@ -395,7 +393,6 @@
                     upgrade: ["用蛋白質穩住血糖曲線", "主食份量可以微調", "讓每餐至少有一份「抗餓食物」"],
                     partners: {
                         best: "蛋白質獵人｜完美互補。",
-                        complementary: "絕食系修仙者｜你餵他、他提醒你吃均衡。",
                         bad: "公館油王｜油＋澱粉太容易失控。"
                     }
                 }
@@ -418,8 +415,7 @@
                     upgrade: ["主食不可省", "蔬菜提升到「看得見的量」", "增肌＝不是只有蛋白質"],
                     partners: {
                         best: "澱粉教徒｜天作之合，互補到完美。",
-                        complementary: "絕食系修仙者｜兩人都吃不夠完整。",
-                        bad: "營養精算師｜帶你走向真正均衡。"
+                        bad: "絕食系修仙者｜兩人都吃不夠完整。"
                     }
                 }
             },
@@ -440,9 +436,8 @@
                     strategy: ["一週一次享受型餐點，保持身心平衡。", "隨身想一份「簡單均衡快餐組合」。", "情緒低落時允許自己吃喜歡的東西。"],
                     upgrade: ["不用追求太嚴格", "做得到的均衡比完美更重要", "保留樂趣，保持持續性"],
                     partners: {
-                        best: "任何人（你是大家的救贖）",
-                        complementary: "油王、澱粉教徒、修仙者",
-                        bad: "隨性美食家｜你讓他安心、他讓你放鬆。"
+                        best: "所有人｜你是大家的救贖。",
+                        bad: null
                     }
                 }
             },
@@ -464,7 +459,6 @@
                     upgrade: ["保持彈性，但建立基本框架", "每天至少一餐吃得完整", "讓身體跟上你的快樂節奏"],
                     partners: {
                         best: "營養精算師｜他給你結構，你給他快樂。",
-                        complementary: "蛋白質獵人、澱粉教徒｜你跟誰都能吃得很開心。",
                         bad: "絕食系修仙者｜兩人都太隨性，營養容易失衡。"
                     }
                 }
@@ -1224,7 +1218,6 @@
 
             const partners = {
                 best: getPartnerData(details.partners.best),
-                complementary: getPartnerData(details.partners.complementary),
                 bad: getPartnerData(details.partners.bad),
             };
 
@@ -1245,12 +1238,24 @@
                 }
 
                 try {
-                    // 1. 將 DOM 轉為 Canvas
-                    const canvas = await window.html2canvas(element, { 
-                        scale: 3, // 提高解析度讓文字更清晰
+                    // 1. 將 DOM 轉為 Canvas (Clone and resize technique)
+                    const clone = element.cloneNode(true);
+                    clone.style.width = "500px"; // Force wider width for Instagram-friendly aspect ratio
+                    clone.style.position = "absolute";
+                    clone.style.left = "-9999px";
+                    clone.style.top = "0";
+                    document.body.appendChild(clone);
+
+                    // Wait a moment for any potential re-renders (though clone is static)
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    const canvas = await window.html2canvas(clone, { 
+                        scale: 2, // High resolution
                         useCORS: true,
-                        backgroundColor: null // 保持背景透明或原色
+                        backgroundColor: null // Transparent background if possible
                     });
+                    
+                    document.body.removeChild(clone);
                     
                     // 2. 轉為 Blob 物件
                     canvas.toBlob(async (blob) => {
@@ -1294,13 +1299,6 @@
                 }
             };
 
-            // 舊版 PDF 輸出 (若需要同時保留功能，可解除註解並新增按鈕，目前以 IG 分享為優先)
-            /*
-            const handleExportPDF = async (e) => {
-                // ... (PDF logic)
-            };
-            */
-
             return (
                 <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 fade-in" onClick={onClose}>
                     <div className="w-full max-w-sm max-h-[90vh] overflow-y-auto no-scrollbar relative" onClick={e => e.stopPropagation()}>
@@ -1311,20 +1309,20 @@
                         <div id="share-card" className="bg-gradient-to-br from-orange-50 to-yellow-100 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                             
                             {/* 頭部：人格形象 */}
-                            <div className="pt-10 pb-6 text-center bg-white/60 backdrop-blur-sm relative overflow-hidden">
+                            <div className="pt-4 pb-1 text-center bg-white/60 backdrop-blur-sm relative overflow-hidden">
                                 <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
                                 <div className="absolute top-[-50px] left-[-50px] w-40 h-40 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
                                 
-                                <div className="relative z-10 mb-4 flex justify-center">
+                                <div className="relative z-10 mb-1 flex justify-center">
                                     {persona.image && persona.image.length > 0 ? (
-                                        <img src={persona.image} alt={persona.name} className="w-40 h-40 object-contain drop-shadow-2xl" />
+                                        <img src={persona.image} alt={persona.name} className="w-64 h-64 object-contain drop-shadow-2xl" />
                                     ) : (
-                                        <div className="text-8xl animate-bounce">{persona.emoji}</div>
+                                        <div className="text-9xl">{persona.emoji}</div>
                                     )}
                                 </div>
                                 <div className="relative z-10">
-                                    <span className="bg-black text-white text-[10px] px-2 py-1 rounded-full font-bold tracking-widest uppercase mb-2 inline-block">Food Persona</span>
-                                    <h3 className={`text-3xl font-black mb-2 text-gray-800`}>{persona.name}</h3>
+                                    <span className="bg-black text-white text-[10px] px-2 py-1 rounded-full font-bold tracking-widest uppercase mb-1 inline-block">Food Persona</span>
+                                    <h3 className={`text-3xl font-black mb-1 text-gray-800`}>{persona.name}</h3>
                                     <div className="px-8 italic text-gray-600 font-serif text-sm leading-relaxed">
                                         "{details.slogan}"
                                     </div>
@@ -1332,20 +1330,20 @@
                             </div>
 
                             {/* 內容區 */}
-                            <div className="p-6 space-y-5">
+                            <div className="p-5 space-y-3">
                                 {/* 特徵 */}
-                                <div className="bg-white/80 p-4 rounded-xl shadow-sm">
-                                    <h4 className="font-black text-gray-800 mb-2 flex items-center gap-2 text-sm"><span className="text-lg">🔍</span> 飲食行為特徵</h4>
-                                    <ul className="list-disc list-outside ml-4 text-xs text-gray-600 space-y-1">
+                                <div className="bg-white/80 p-3 rounded-xl shadow-sm text-left">
+                                    <h4 className="font-black text-gray-800 mb-1 flex items-center gap-2 text-sm"><span className="text-lg">🔍</span> 飲食行為特徵</h4>
+                                    <ul className="list-disc list-outside ml-4 text-xs text-gray-600 space-y-0.5">
                                         {details.traits.map((trait, i) => <li key={i}>{trait}</li>)}
                                     </ul>
                                 </div>
 
                                 {/* 策略與升級 (合併顯示，節省空間) */}
-                                <div className="grid grid-cols-1 gap-3">
-                                    <div className="bg-white/80 p-4 rounded-xl shadow-sm border-l-4 border-green-400">
-                                        <h4 className="font-black text-gray-800 mb-2 flex items-center gap-2 text-sm"><span className="text-lg">🌱</span> 小步策略</h4>
-                                        <div className="space-y-1.5">
+                                <div className="grid grid-cols-1 gap-2">
+                                    <div className="bg-white/80 p-3 rounded-xl shadow-sm border-l-4 border-green-400 text-left">
+                                        <h4 className="font-black text-gray-800 mb-1 flex items-center gap-2 text-sm"><span className="text-lg">🌱</span> 小步策略</h4>
+                                        <div className="space-y-1">
                                             {details.strategy.map((strat, i) => (
                                                 <div key={i} className="flex gap-2 items-start text-xs text-gray-600">
                                                     <div className="mt-1 min-w-[4px] h-[4px] rounded-full bg-green-400"></div>
@@ -1358,30 +1356,31 @@
 
                                 {/* 飯友配對 (橫向排列) */}
                                 <div>
-                                    <h4 className="font-black text-gray-800 mb-3 flex items-center gap-2 text-sm"><span className="text-lg">🤝</span> 飯友配對</h4>
+                                    <h4 className="font-black text-gray-800 mb-2 flex items-center gap-2 text-sm"><span className="text-lg">🤝</span> 飯友配對</h4>
                                     <div className="grid grid-cols-1 gap-2">
                                         {/* 最佳飯友 */}
                                         {partners.best && (
-                                            <div className="bg-white/90 p-3 rounded-xl flex items-center gap-3 shadow-sm ring-2 ring-pink-100">
-                                                <div className="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center flex-shrink-0 text-xl border border-pink-200 overflow-hidden">
+                                            <div className="bg-white/90 p-3 rounded-xl flex items-center gap-3 shadow-sm ring-2 ring-pink-100 text-left">
+                                                <div className="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center flex-shrink-0 text-xl border border-pink-200 overflow-hidden">
                                                     {partners.best.image ? <img src={partners.best.image} className="w-full h-full object-cover"/> : partners.best.emoji}
                                                 </div>
                                                 <div>
                                                     <div className="text-[10px] text-pink-500 font-bold uppercase">Best Partner</div>
-                                                    <div className="font-bold text-gray-800 text-xs">{partners.best.name}</div>
-                                                    <div className="text-[10px] text-gray-500">{partners.best.desc}</div>
+                                                    <div className="font-bold text-gray-800 text-sm">{partners.best.name}</div>
+                                                    <div className="text-xs text-gray-500">{partners.best.desc}</div>
                                                 </div>
                                             </div>
                                         )}
-                                        {/* 互補飯友 */}
-                                        {partners.complementary && (
-                                            <div className="bg-white/60 p-2 rounded-xl flex items-center gap-3">
-                                                <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 text-sm border border-blue-100 overflow-hidden">
-                                                     {partners.complementary.image ? <img src={partners.complementary.image} className="w-full h-full object-cover"/> : partners.complementary.emoji}
+                                        {/* 不太合飯友 */}
+                                        {partners.bad && (
+                                            <div className="bg-white/90 p-3 rounded-xl flex items-center gap-3 shadow-sm ring-2 ring-gray-200 text-left">
+                                                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center flex-shrink-0 text-xl border border-gray-200 overflow-hidden">
+                                                     {partners.bad.image ? <img src={partners.bad.image} className="w-full h-full object-cover"/> : partners.bad.emoji}
                                                 </div>
                                                 <div>
-                                                    <div className="text-[10px] text-blue-500 font-bold">✨ 互補：{partners.complementary.name}</div>
-                                                    <div className="text-[10px] text-gray-500">{partners.complementary.desc}</div>
+                                                    <div className="text-[10px] text-gray-500 font-bold uppercase">Not Suitable</div>
+                                                    <div className="font-bold text-gray-800 text-sm">{partners.bad.name}</div>
+                                                    <div className="text-xs text-gray-500">{partners.bad.desc}</div>
                                                 </div>
                                             </div>
                                         )}
