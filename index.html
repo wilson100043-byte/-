@@ -1202,7 +1202,7 @@
             );
         };
         
-        // --- 詳細人格報告模態視窗 ---
+        // --- 修改：詳細人格報告模態視窗 (修復圖片變形 + 模糊消失問題 + 調整排版) ---
         const PersonaDetailModal = ({ persona, onClose }) => {
             if (!persona) return null;
             const details = persona.details;
@@ -1227,6 +1227,7 @@
                 btn.innerText = "生成報告中...";
                 btn.disabled = true;
 
+                // Fix: ID must match the rendered JSX
                 const element = document.getElementById('share-card');
                 if (!element) return;
                 
@@ -1238,36 +1239,81 @@
                 }
 
                 try {
-                    // 1. 將 DOM 轉為 Canvas (Clone and resize technique)
+                    // 1. 複製 DOM
                     const clone = element.cloneNode(true);
-                    clone.style.width = "500px"; // Force wider width for Instagram-friendly aspect ratio
-                    clone.style.position = "absolute";
-                    clone.style.left = "-9999px";
-                    clone.style.top = "0";
+                    
+                    // 2. 設定樣式：寬度設為 375px (標準手機寬度)，確保比例接近 9:16
+                    Object.assign(clone.style, {
+                        width: '375px', 
+                        height: 'auto',
+                        position: 'absolute',
+                        top: '-9999px',
+                        left: '-9999px',
+                        zIndex: '-1',
+                        backgroundColor: '#ffffff'
+                    });
+
+                    // --- 3. 外科手術修正：修復圖片變形與模糊消失 ---
+                    
+                    // (A) 修復圖片變形：將 img 轉為 background-image div
+                    const images = clone.querySelectorAll('img');
+                    images.forEach(img => {
+                        const div = document.createElement('div');
+                        // 複製原本 img 的 class (保留尺寸設定 w-32 h-32 等)
+                        div.className = img.className; 
+                        // 強制覆蓋顯示樣式
+                        Object.assign(div.style, {
+                            backgroundImage: `url(${img.src})`,
+                            backgroundSize: 'contain', // 關鍵：使用 contain 保持比例
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            display: 'block'
+                        });
+                        // 移除可能影響排版的 class
+                        div.classList.remove('object-contain'); 
+                        img.parentNode.replaceChild(div, img);
+                    });
+
+                    // (B) 修復模糊消失 & 移除動畫：將 blur filter 改為 radial-gradient
+                    const blobs = clone.querySelectorAll('.animate-blob');
+                    blobs.forEach(blob => {
+                        blob.classList.remove('animate-blob'); // 停止動畫
+                        blob.classList.remove('filter');       // 移除濾鏡
+                        blob.classList.remove('blur-xl');
+                        blob.classList.remove('mix-blend-multiply');
+                        
+                        // 讀取原本的顏色 (yellow 或 pink)
+                        const isYellow = blob.classList.contains('bg-yellow-300');
+                        const color = isYellow ? '253, 224, 71' : '249, 168, 212'; // Tailwind yellow-300 / pink-300 rgb
+                        
+                        // 改用漸層模擬模糊 (Canvas 支援度極佳)
+                        blob.style.background = `radial-gradient(circle, rgba(${color}, 0.6) 0%, rgba(${color}, 0) 70%)`;
+                        blob.style.opacity = '1'; // 確保可見
+                    });
+
+                    // (C) 移除其他動畫
+                    const bounces = clone.querySelectorAll('.animate-bounce');
+                    bounces.forEach(el => el.classList.remove('animate-bounce'));
+
                     document.body.appendChild(clone);
 
-                    // Wait a moment for any potential re-renders (though clone is static)
-                    await new Promise(resolve => setTimeout(resolve, 100));
-
+                    // 4. 截圖
                     const canvas = await window.html2canvas(clone, { 
-                        scale: 2, // High resolution
+                        scale: 3, 
                         useCORS: true,
-                        backgroundColor: null // Transparent background if possible
+                        backgroundColor: "#ffffff"
                     });
                     
                     document.body.removeChild(clone);
-                    
-                    // 2. 轉為 Blob 物件
+
+                    // 5. 分享流程
                     canvas.toBlob(async (blob) => {
                         if (!blob) {
                             alert("圖片生成失敗");
                             return;
                         }
-
-                        // 建立檔案物件
                         const file = new File([blob], `新生食代_${persona.name}.png`, { type: "image/png" });
 
-                        // 3. 嘗試呼叫原生分享 (Web Share API)
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                             try {
                                 await navigator.share({
@@ -1276,10 +1322,9 @@
                                     text: `我是「${persona.name}」！快來測測你的飲食人格吧！`,
                                 });
                             } catch (shareError) {
-                                console.log("分享被取消或失敗", shareError);
+                                console.log("分享取消");
                             }
                         } else {
-                            // 4. 如果不支援原生分享 (例如電腦版)，則觸發下載
                             const link = document.createElement('a');
                             link.href = canvas.toDataURL('image/png');
                             link.download = `新生食代_${persona.name}.png`;
@@ -1305,101 +1350,99 @@
                         
                         <button onClick={onClose} className="fixed top-4 right-4 z-50 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"><Icons.X /></button>
 
-                        {/* --- 這塊 id="share-card" 是要被截圖的區域，樣式做得像 IG 限動 --- */}
+                        {/* --- share-card 區域 --- */}
                         <div id="share-card" className="bg-gradient-to-br from-orange-50 to-yellow-100 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
                             
-                            {/* 頭部：人格形象 */}
-                            <div className="pt-4 pb-1 text-center bg-white/60 backdrop-blur-sm relative overflow-hidden">
-                                <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                                <div className="absolute top-[-50px] left-[-50px] w-40 h-40 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                            {/* 頭部 (縮減高度) */}
+                            <div className="pt-5 pb-3 text-center bg-white/60 backdrop-blur-sm relative overflow-hidden">
+                                {/* 裝飾圓球 (Blobs) */}
+                                <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-yellow-300 rounded-full animate-blob"></div>
+                                <div className="absolute top-[-50px] left-[-50px] w-40 h-40 bg-pink-300 rounded-full animate-blob animation-delay-2000"></div>
                                 
-                                <div className="relative z-10 mb-1 flex justify-center">
+                                <div className="relative z-10 mb-2 flex justify-center">
                                     {persona.image && persona.image.length > 0 ? (
-                                        <img src={persona.image} alt={persona.name} className="w-64 h-64 object-contain drop-shadow-2xl" />
+                                        <img src={persona.image} alt={persona.name} className="w-28 h-28 object-contain drop-shadow-2xl" />
                                     ) : (
-                                        <div className="text-9xl">{persona.emoji}</div>
+                                        <div className="text-7xl animate-bounce">{persona.emoji}</div>
                                     )}
                                 </div>
                                 <div className="relative z-10">
                                     <span className="bg-black text-white text-[10px] px-2 py-1 rounded-full font-bold tracking-widest uppercase mb-1 inline-block">Food Persona</span>
-                                    <h3 className={`text-3xl font-black mb-1 text-gray-800`}>{persona.name}</h3>
-                                    <div className="px-8 italic text-gray-600 font-serif text-sm leading-relaxed">
+                                    <h3 className={`text-2xl font-black mb-1 text-gray-800`}>{persona.name}</h3>
+                                    <div className="px-4 italic text-gray-600 font-serif text-[10px] leading-relaxed">
                                         "{details.slogan}"
                                     </div>
                                 </div>
                             </div>
 
-                            {/* 內容區 */}
-                            <div className="p-5 space-y-3">
-                                {/* 特徵 */}
-                                <div className="bg-white/80 p-3 rounded-xl shadow-sm text-left">
-                                    <h4 className="font-black text-gray-800 mb-1 flex items-center gap-2 text-sm"><span className="text-lg">🔍</span> 飲食行為特徵</h4>
-                                    <ul className="list-disc list-outside ml-4 text-xs text-gray-600 space-y-0.5">
+                            {/* 內容區 (緊湊化) */}
+                            <div className="p-4 space-y-2">
+                                {/* 特徵 (文字靠左) */}
+                                <div className="bg-white/80 p-2.5 rounded-xl shadow-sm text-left">
+                                    <h4 className="font-black text-gray-800 mb-1 flex items-center gap-1.5 text-xs"><span className="text-sm">🔍</span> 飲食行為特徵</h4>
+                                    <ul className="list-disc list-outside ml-3.5 text-[10px] text-gray-600 space-y-0.5 leading-tight">
                                         {details.traits.map((trait, i) => <li key={i}>{trait}</li>)}
                                     </ul>
                                 </div>
 
-                                {/* 策略與升級 (合併顯示，節省空間) */}
-                                <div className="grid grid-cols-1 gap-2">
-                                    <div className="bg-white/80 p-3 rounded-xl shadow-sm border-l-4 border-green-400 text-left">
-                                        <h4 className="font-black text-gray-800 mb-1 flex items-center gap-2 text-sm"><span className="text-lg">🌱</span> 小步策略</h4>
-                                        <div className="space-y-1">
-                                            {details.strategy.map((strat, i) => (
-                                                <div key={i} className="flex gap-2 items-start text-xs text-gray-600">
-                                                    <div className="mt-1 min-w-[4px] h-[4px] rounded-full bg-green-400"></div>
-                                                    <span>{strat}</span>
-                                                </div>
-                                            ))}
-                                        </div>
+                                {/* 策略與升級 */}
+                                <div className="bg-white/80 p-2.5 rounded-xl shadow-sm border-l-4 border-green-400 text-left">
+                                    <h4 className="font-black text-gray-800 mb-1 flex items-center gap-1.5 text-xs"><span className="text-sm">🌱</span> 小步策略</h4>
+                                    <div className="space-y-1">
+                                        {details.strategy.map((strat, i) => (
+                                            <div key={i} className="flex gap-1.5 items-start text-[10px] text-gray-600 leading-tight">
+                                                <div className="mt-1 min-w-[3px] h-[3px] rounded-full bg-green-400"></div>
+                                                <span>{strat}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* 飯友配對 (橫向排列) */}
+                                {/* 飯友 (改為兩欄並排以顯示兩個) */}
                                 <div>
-                                    <h4 className="font-black text-gray-800 mb-2 flex items-center gap-2 text-sm"><span className="text-lg">🤝</span> 飯友配對</h4>
-                                    <div className="grid grid-cols-1 gap-2">
-                                        {/* 最佳飯友 */}
-                                        {partners.best && (
-                                            <div className="bg-white/90 p-3 rounded-xl flex items-center gap-3 shadow-sm ring-2 ring-pink-100 text-left">
-                                                <div className="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center flex-shrink-0 text-xl border border-pink-200 overflow-hidden">
-                                                    {partners.best.image ? <img src={partners.best.image} className="w-full h-full object-cover"/> : partners.best.emoji}
+                                    <h4 className="font-black text-gray-800 mb-1.5 flex items-center gap-1.5 text-xs"><span className="text-sm">🤝</span> 飯友配對</h4>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {/* Best Partner */}
+                                        {partners.best ? (
+                                            <div className="bg-white/90 p-2 rounded-xl flex flex-col gap-1.5 shadow-sm ring-1 ring-pink-100 items-center text-center">
+                                                <div className="w-8 h-8 bg-pink-50 rounded-full flex items-center justify-center flex-shrink-0 text-lg border border-pink-200 overflow-hidden">
+                                                    {partners.best.image ? <img src={partners.best.image} className="w-full h-full object-contain"/> : partners.best.emoji}
                                                 </div>
                                                 <div>
-                                                    <div className="text-[10px] text-pink-500 font-bold uppercase">Best Partner</div>
-                                                    <div className="font-bold text-gray-800 text-sm">{partners.best.name}</div>
-                                                    <div className="text-xs text-gray-500">{partners.best.desc}</div>
+                                                    <div className="inline-block text-[8px] text-white bg-pink-400 px-1.5 py-0.5 rounded font-bold uppercase mb-0.5">Best</div>
+                                                    <div className="font-bold text-gray-800 text-[10px] whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{partners.best.name}</div>
+                                                    <div className="text-[8px] text-gray-500 leading-tight mt-0.5 line-clamp-2 text-left">{partners.best.desc}</div>
                                                 </div>
                                             </div>
-                                        )}
-                                        {/* 不太合飯友 */}
-                                        {partners.bad && (
-                                            <div className="bg-white/90 p-3 rounded-xl flex items-center gap-3 shadow-sm ring-2 ring-gray-200 text-left">
-                                                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center flex-shrink-0 text-xl border border-gray-200 overflow-hidden">
-                                                     {partners.bad.image ? <img src={partners.bad.image} className="w-full h-full object-cover"/> : partners.bad.emoji}
+                                        ) : <div className="hidden"></div>}
+                                        
+                                        {/* Bad Partner */}
+                                        {partners.bad ? (
+                                            <div className="bg-white/90 p-2 rounded-xl flex flex-col gap-1.5 shadow-sm ring-1 ring-gray-200 items-center text-center">
+                                                <div className="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center flex-shrink-0 text-lg border border-gray-200 overflow-hidden">
+                                                     {partners.bad.image ? <img src={partners.bad.image} className="w-full h-full object-contain"/> : partners.bad.emoji}
                                                 </div>
                                                 <div>
-                                                    <div className="text-[10px] text-gray-500 font-bold uppercase">Not Suitable</div>
-                                                    <div className="font-bold text-gray-800 text-sm">{partners.bad.name}</div>
-                                                    <div className="text-xs text-gray-500">{partners.bad.desc}</div>
+                                                    <div className="inline-block text-[8px] text-white bg-gray-400 px-1.5 py-0.5 rounded font-bold uppercase mb-0.5">Avoid</div>
+                                                    <div className="font-bold text-gray-800 text-[10px] whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{partners.bad.name}</div>
+                                                    <div className="text-[8px] text-gray-500 leading-tight mt-0.5 line-clamp-2 text-left">{partners.bad.desc}</div>
                                                 </div>
                                             </div>
-                                        )}
+                                        ) : <div className="hidden"></div>}
                                     </div>
                                 </div>
                             </div>
                             
-                            {/* 底部品牌 */}
-                            <div className="bg-gray-900 p-3 text-center">
-                                <p className="text-white text-[10px] font-bold tracking-widest opacity-80">新生食代：人格覺醒</p>
+                            <div className="bg-gray-900 p-2 text-center">
+                                <p className="text-white text-[9px] font-bold tracking-widest opacity-80">新生食代：人格覺醒</p>
                                 <p className="text-gray-500 text-[8px]">台大校園飲食推廣計畫</p>
                             </div>
                         </div>
 
-                        {/* 按鈕區塊 (不被截圖) */}
                         <div className="mt-4 sticky bottom-4 z-50">
                             <button onClick={handleShare} className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3.5 rounded-xl font-bold shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
-                                <span>下載圖片報告</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                <span>下載報告</span>
                             </button>
                         </div>
                     </div>
